@@ -2,6 +2,10 @@ ARG ALPINE_VERSION=3.13
 
 FROM alpine:${ALPINE_VERSION}
 
+# Timezones
+RUN apk add -q --update --progress --no-cache tzdata
+ENV TZ=
+
 # Docker
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
 
