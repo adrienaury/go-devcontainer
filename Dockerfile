@@ -30,10 +30,5 @@ ENV ZSH /root/.oh-my-zsh
 COPY .zshrc /root/.zshrc
 COPY .p10k.zsh /root/.p10k.zsh
 
-# Fix some problems with key bindings
-RUN bindkey '^[[H' beginning-of-line \
- && bindkey '^[[F' end-of-line \
- && bindkey '^[[3~' delete-char-forward
-
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
