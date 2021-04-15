@@ -26,21 +26,25 @@ ENV ZSH /root/.oh-my-zsh
 COPY .zshrc /root/.zshrc
 COPY .p10k.zsh /root/.p10k.zsh
 
-### Miscellaneous development tools ###
+# Go
+RUN apk add -q --update --progress --no-cache go
+ENV CGO_ENABLED=0 \
+    GO111MODULE=on \
+    PATH=$PATH:/root/go/bin
 
 # Docker CLI
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
 
-### Go developement tools ###
-ARG GOLANGCI_VERSION=v1.39.0
+# Neon
+ARG NEON_VERSION=1.4.4
+ENV NEON_VERSION=$NEON_VERSION
+RUN git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git \
+ && (cd neon/neon && go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION")
 
-# Go
-RUN apk add -q --update --progress --no-cache go
-ENV CGO_ENABLED=0 \
-    GO111MODULE=on
-
-# Linters
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_VERSION
+# GolangCI
+ARG GOLANGCI_VERSION=1.39.0
+ENV GOLANGCI_VERSION=$GOLANGCI_VERSION
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_VERSION
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
