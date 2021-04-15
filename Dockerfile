@@ -46,5 +46,11 @@ ARG GOLANGCI_VERSION=1.39.0
 ENV GOLANGCI_VERSION=$GOLANGCI_VERSION
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_VERSION
 
+# GoReleaser
+RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b /usr/local/bin
+
+# svu
+RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin
+
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
