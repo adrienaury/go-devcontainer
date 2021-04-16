@@ -36,7 +36,7 @@ ENV CGO_ENABLED=0 \
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
 
 # Other utilities
-RUN apk add -q --update --progress --no-cache jq
+RUN apk add -q --update --progress --no-cache jq bash curl figlet
 
 # Github CLI
 ARG GITHUBCLI_VERSION=1.9.1
@@ -64,6 +64,8 @@ RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser
 ARG SVU_VERSION=1.3.2
 ENV SVU_VERSION=$SVU_VERSION
 RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin v${SVU_VERSION}
+
+COPY welcome.sh /root/welcome.sh
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]

@@ -5,12 +5,6 @@ set -o pipefail
 set -o nounset
 # set -o xtrace
 
-# Set magic variables for current file & dir
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
-__base="$(basename ${__file} .sh)"
-__root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
-
 curlcache() {
   DIR="${HOME}/.curlcache"
   mkdir -p "${DIR}"
@@ -31,8 +25,8 @@ get_latest_released_version() {
 
 print_version() {
   AVAIL=$(get_latest_released_version $2 $3)
-  [ "${AVAIL}" == "$4" ] && printf "%-15s %7s ✅\n" "$1" "$4" # ✔️ not working
-  [ "${AVAIL}" != "$4" ] && printf "%-15s %7s ❌ (new version available: %s)\n" "$1" "$4" "${AVAIL}"
+  [ "${AVAIL}" == "$4" ] && printf "%-20s %7s ✅\n" "$1" "$4" # ✔️ not working
+  [ "${AVAIL}" != "$4" ] && printf "%-20s %7s ❌ (%s 🆕)\n" "$1" "$4" "${AVAIL}"
   return 0
 }
 
@@ -56,8 +50,15 @@ get_svu_version() {
   svu --version 2>&1 | cut -d' ' -f3
 }
 
+figlet -c Go Devcontainer
+
+echo
+echo   "Installed tools"
+echo   "============================================================================="
 print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
 print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
 print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
 print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
+echo   "============================================================================="
+echo
