@@ -35,6 +35,9 @@ ENV CGO_ENABLED=0 \
 # Docker CLI
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
 
+# Other utilities
+RUN apk add -q --update --progress --no-cache jq
+
 # Github CLI
 ARG GITHUBCLI_VERSION=1.9.1
 ENV GITHUBCLI_VERSION=$GITHUBCLI_VERSION
@@ -47,17 +50,17 @@ ENV NEON_VERSION=$NEON_VERSION
 RUN git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git \
  && (cd neon/neon && go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION")
 
-# GolangCI
-ARG GOLANGCI_VERSION=1.39.0
-ENV GOLANGCI_VERSION=$GOLANGCI_VERSION
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_VERSION
+# GolangCI Lint
+ARG GOLANGCI_LINT_VERSION=1.39.0
+ENV GOLANGCI_LINT_VERSION=$GOLANGCI_LINT_VERSION
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
 
 # GoReleaser
 ARG GORELEASER_VERSION=0.162.0
 ENV GORELEASER_VERSION=$GORELEASER_VERSION
 RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b /usr/local/bin v${GORELEASER_VERSION}
 
-# svu
+# SVU
 ARG SVU_VERSION=1.3.2
 ENV SVU_VERSION=$SVU_VERSION
 RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin v${SVU_VERSION}
