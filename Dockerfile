@@ -35,6 +35,12 @@ ENV CGO_ENABLED=0 \
 # Docker CLI
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
 
+# Github CLI
+ARG GITHUBCLI_VERSION=1.9.1
+ENV GITHUBCLI_VERSION=$GITHUBCLI_VERSION
+RUN wget -O- -nv https://github.com/cli/cli/releases/download/v${GITHUBCLI_VERSION}/gh_${GITHUBCLI_VERSION}_linux_amd64.tar.gz | tar -xzO gh_${GITHUBCLI_VERSION}_linux_amd64/bin/gh > /usr/local/bin/gh \
+ && chmod +x /usr/local/bin/gh
+
 # Neon
 ARG NEON_VERSION=1.4.4
 ENV NEON_VERSION=$NEON_VERSION
@@ -47,10 +53,14 @@ ENV GOLANGCI_VERSION=$GOLANGCI_VERSION
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_VERSION
 
 # GoReleaser
-RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b /usr/local/bin
+ARG GORELEASER_VERSION=0.162.0
+ENV GORELEASER_VERSION=$GORELEASER_VERSION
+RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b /usr/local/bin v${GORELEASER_VERSION}
 
 # svu
-RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin
+ARG SVU_VERSION=1.3.2
+ENV SVU_VERSION=$SVU_VERSION
+RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin v${SVU_VERSION}
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
