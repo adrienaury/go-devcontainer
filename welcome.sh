@@ -67,6 +67,18 @@ figlet -c Go Devcontainer
   )
 )
 
+DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
+echo "├── Docker Client v${DOCKER_CLI_VERSION} ✅"
+
+GIT_VERSION=$(git --version | cut -d' ' -f3 || :)
+echo "├── Git Client v${GIT_VERSION} ✅"
+
+ZSH_VERSION=$(zsh --version | cut -d' ' -f2 || :)
+echo "├── Zsh v${ZSH_VERSION} ✅"
+
+GO_VERSION=$(go version | cut -d' ' -f3 || :)
+echo "├── Go v${GO_VERSION#go} ✅"
+
 echo
 echo   "Installed tools"
 echo   "============================================================================="
