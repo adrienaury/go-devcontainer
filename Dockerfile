@@ -8,7 +8,7 @@ RUN apk add -q --update --progress --no-cache tzdata
 ENV TZ=
 
 # Git
-RUN apk add -q --update --progress --no-cache git
+RUN apk add -q --update --progress --no-cache git git-perl
 
 # Zsh
 RUN apk add -q --update --progress --no-cache zsh
