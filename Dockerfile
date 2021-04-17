@@ -75,7 +75,14 @@ RUN wget -O /usr/local/bin/venom -nv https://github.com/ovh/venom/releases/downl
  && chmod +x /usr/local/bin/venom
 
 # Gopls
-RUN go get -u golang.org/x/tools/gopls
+ARG GOPLS_VERSION=0.6.10
+ENV GOPLS_VERSION=$GOPLS_VERSION
+RUN go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
+
+# Delve
+ARG DELVE_VERSION=1.6.0
+ENV DELVE_VERSION=$DELVE_VERSION
+RUN go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
 
 COPY welcome.sh /root/welcome.sh
 
