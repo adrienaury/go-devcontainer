@@ -72,6 +72,9 @@ ENV VENOM_VERSION=$VENOM_VERSION
 RUN wget -O /usr/local/bin/venom -nv https://github.com/ovh/venom/releases/download/v${VENOM_VERSION}/venom.linux-amd64 \
  && chmod +x /usr/local/bin/venom
 
+# Gopls
+RUN go get -u golang.org/x/tools/gopls
+
 COPY welcome.sh /root/welcome.sh
 
 WORKDIR /root
