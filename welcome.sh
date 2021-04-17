@@ -30,19 +30,19 @@ print_version() {
 }
 
 get_githubcli_version() {
-  gh --version | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
+  gh --version 2>/dev/null | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
 }
 
 get_neon_version() {
-  neon --version || echo -n "n/a" && return 0
+  neon --version 2>/dev/null || echo -n "n/a" && return 0
 }
 
 get_golangci_lint_version() {
-  golangci-lint --version | cut -d' ' -f4 || echo -n "n/a" && return 0
+  golangci-lint --version 2>/dev/null | cut -d' ' -f4 || echo -n "n/a" && return 0
 }
 
 get_goreleaser_version() {
-  goreleaser --version | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
+  goreleaser --version 2>/dev/null | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
 }
 
 get_svu_version() {
