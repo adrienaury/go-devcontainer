@@ -6,13 +6,11 @@ set -o nounset
 # set -o xtrace
 
 curlcache() {
-  DIR="${HOME}/.curlcache"
-  mkdir -p "${DIR}"
-  HASH=$(echo -n "$@" | md5sum | awk '{print $1}')
-  CACHE="${DIR}/${HASH}"
-  EXPIRY=3600 # 1 hour
-  test -f "${CACHE}" && [ $(expr $(date +%s) - $(date -r "${CACHE}" +%s)) -le ${EXPIRY} ] || curl "$@" > "${CACHE}"
-  cat "${CACHE}"
+  sh scripts/curlcache.sh "$@"
+}
+
+docker-list-tags() {
+  bash scripts/docker-list-tags.sh "$@"
 }
 
 get_all_released_tag() {
@@ -56,6 +54,18 @@ get_venom_version() {
 }
 
 figlet -c Go Devcontainer
+
+(
+  source /etc/os-release
+  echo -n "${NAME} v${VERSION_ID} "
+  DIGEST=$(docker-list-tags alpine | grep "${VERSION_ID}" | jq --raw-output '.digest')
+  ALL_TAGS=($(docker-list-tags alpine |  grep "${DIGEST}" | jq --raw-output '.tag'))
+  [[ " ${ALL_TAGS[@]} " =~ " latest " ]] && echo "✅" || (
+    LATEST_DIGEST=$(docker-list-tags alpine | grep "latest" | jq --raw-output '.digest')
+    LATEST_TAGS=($(docker-list-tags alpine |  grep "${LATEST_DIGEST}" | grep -v "latest" | jq --raw-output '.tag'))
+    (IFS=$'/' ; echo "🆕 new base image available with tags ${LATEST_TAGS[*]/#/v}")
+  )
+)
 
 echo
 echo   "Installed tools"
