@@ -25,9 +25,9 @@ get_latest_released_version() {
 
 print_version() {
   AVAIL=$(get_latest_released_version $2 $3)
-  [ "${AVAIL}" == "$4" ] && printf "%-20s %7s ✅\n" "$1" "$4" # ✔️ not working
-  [ "$4" == "n/a" ] && printf "%-20s %7s ❌ (latest version is %s)\n" "$1" "$4" "${AVAIL}" && return 0
-  [ "${AVAIL}" != "$4" ] && printf "%-20s %7s 🆕 (new version is %s)\n" "$1" "$4" "${AVAIL}" && return 0
+  [ "${AVAIL}" == "$4" ] && printf "%-20s %15s ✅\n" "$1" "$4" # ✔️ not working
+  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run './install.sh $3 ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run './install.sh $3 ${AVAIL}' to update\n" "$1" "$4" && return 0
   return 0
 }
 
@@ -52,7 +52,7 @@ get_svu_version() {
 }
 
 get_venom_version() {
-  venom --version 2>/dev/null | cut -d' ' -f3 || echo -n "n/a" && return 0
+  venom version 2>/dev/null | cut -d' ' -f3 | sed -e 's/^v//' || echo -n "n/a" && return 0
 }
 
 figlet -c Go Devcontainer
