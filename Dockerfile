@@ -45,7 +45,7 @@ RUN wget -O- -nv https://github.com/cli/cli/releases/download/v${GITHUBCLI_VERSI
  && chmod +x /usr/local/bin/gh
 
 # Neon
-ARG NEON_VERSION=1.4.4
+ARG NEON_VERSION=1.5.0
 ENV NEON_VERSION=$NEON_VERSION
 RUN git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git \
  && (cd neon/neon && go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION")
