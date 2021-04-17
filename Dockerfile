@@ -1,5 +1,6 @@
 ARG ALPINE_VERSION=3.13
-
+ARG GO_VERSION=1.16.3
+FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
 FROM alpine:${ALPINE_VERSION}
 
 # Timezones
@@ -27,10 +28,11 @@ COPY .zshrc /root/.zshrc
 COPY .p10k.zsh /root/.p10k.zsh
 
 # Go
-RUN apk add -q --update --progress --no-cache go
-ENV CGO_ENABLED=0 \
-    GO111MODULE=on \
-    PATH=$PATH:/root/go/bin
+COPY --from=go /usr/local/go /usr/local/go
+ENV GOPATH=/root/go
+ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
 
 # Docker CLI
 RUN apk add -q --update --progress --no-cache docker-cli docker-compose
