@@ -11,7 +11,7 @@ curlcache() {
   HASH=$(echo -n "$@" | md5sum | awk '{print $1}')
   CACHE="${DIR}/${HASH}"
   EXPIRY=3600 # 1 hour
-  test -f "${CACHE}" && [ $(expr $(date +%s) - $(date -r "${CACHE}" +%s)) -le ${EXPIRY} ] || curl $@ > "${CACHE}"
+  test -f "${CACHE}" && [ $(expr $(date +%s) - $(date -r "${CACHE}" +%s)) -le ${EXPIRY} ] || curl "$@" > "${CACHE}"
   cat "${CACHE}"
 }
 
