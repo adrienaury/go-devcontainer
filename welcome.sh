@@ -57,6 +57,10 @@ get_gopls_version() {
   gopls version 2>/dev/null | head -1 | cut -d' ' -f2 | sed -e 's/^v//' || echo -n "n/a" && return 0
 }
 
+get_delve_version() {
+  dlv version 2>/dev/null | head -2 | tail -1 | cut -d' ' -f2 | sed -e 's/^v//' || echo -n "n/a" && return 0
+}
+
 figlet -c Go Devcontainer
 
 (
@@ -93,5 +97,6 @@ print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
 print_version "Venom" "ovh" "venom" "$(get_venom_version)"
 print_version "Gopls" "golang" "tools" "$(get_gopls_version)"
+print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
 echo   "============================================================================="
 echo
