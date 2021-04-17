@@ -18,7 +18,7 @@ get_all_released_tag() {
 }
 
 get_latest_released_version() {
-  curlcache --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases/latest" | jq --raw-output ".tag_name" | sed -e 's/^v//'
+  curlcache --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases/latest" | jq --raw-output ".tag_name" | sed -e 's/^.*v//'
 }
 
 print_version() {
@@ -51,6 +51,10 @@ get_svu_version() {
 
 get_venom_version() {
   venom version 2>/dev/null | cut -d' ' -f3 | sed -e 's/^v//' || echo -n "n/a" && return 0
+}
+
+get_gopls_version() {
+  gopls version 2>/dev/null | head -1 | cut -d' ' -f2 | sed -e 's/^v//' || echo -n "n/a" && return 0
 }
 
 figlet -c Go Devcontainer
@@ -88,5 +92,6 @@ print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_ve
 print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
 print_version "Venom" "ovh" "venom" "$(get_venom_version)"
+print_version "Gopls" "golang" "tools" "$(get_gopls_version)"
 echo   "============================================================================="
 echo
