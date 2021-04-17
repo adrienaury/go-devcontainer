@@ -49,6 +49,7 @@ ARG NEON_VERSION=1.5.0
 ENV NEON_VERSION=$NEON_VERSION
 RUN git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git \
  && (cd neon/neon && go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION")
+ && rm -rf neon
 
 # GolangCI Lint
 ARG GOLANGCI_LINT_VERSION=1.39.0
