@@ -26,28 +26,33 @@ get_latest_released_version() {
 print_version() {
   AVAIL=$(get_latest_released_version $2 $3)
   [ "${AVAIL}" == "$4" ] && printf "%-20s %7s ✅\n" "$1" "$4" # ✔️ not working
-  [ "${AVAIL}" != "$4" ] && printf "%-20s %7s ❌ (%s 🆕)\n" "$1" "$4" "${AVAIL}"
+  [ "$4" == "n/a" ] && printf "%-20s %7s ❌ (latest version is %s)\n" "$1" "$4" "${AVAIL}" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "%-20s %7s 🆕 (new version is %s)\n" "$1" "$4" "${AVAIL}" && return 0
   return 0
 }
 
 get_githubcli_version() {
-  gh --version | head -1 | cut -d' ' -f3
+  gh --version | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
 }
 
 get_neon_version() {
-  neon --version
+  neon --version || echo -n "n/a" && return 0
 }
 
 get_golangci_lint_version() {
-  golangci-lint --version | cut -d' ' -f4
+  golangci-lint --version | cut -d' ' -f4 || echo -n "n/a" && return 0
 }
 
 get_goreleaser_version() {
-  goreleaser --version | head -1 | cut -d' ' -f3
+  goreleaser --version | head -1 | cut -d' ' -f3 || echo -n "n/a" && return 0
 }
 
 get_svu_version() {
-  svu --version 2>&1 | cut -d' ' -f3
+  svu --version 2>&1 | cut -d' ' -f3 || echo -n "n/a" && return 0
+}
+
+get_venom_version() {
+  venom --version 2>/dev/null | cut -d' ' -f3 || echo -n "n/a" && return 0
 }
 
 figlet -c Go Devcontainer
@@ -60,5 +65,6 @@ print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
 print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
 print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
+print_version "Venom" "ovh" "venom" "$(get_venom_version)"
 echo   "============================================================================="
 echo
