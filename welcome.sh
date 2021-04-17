@@ -9,7 +9,7 @@ curlcache() {
   sh scripts/curlcache.sh "$@"
 }
 
-docker-list-tags() {
+docker_list_tags() {
   bash scripts/docker-list-tags.sh "$@"
 }
 
@@ -58,11 +58,11 @@ figlet -c Go Devcontainer
 (
   source /etc/os-release
   echo -n "${NAME} v${VERSION_ID} "
-  DIGEST=$(docker-list-tags alpine | grep "${VERSION_ID}" | jq --raw-output '.digest')
-  ALL_TAGS=($(docker-list-tags alpine |  grep "${DIGEST}" | jq --raw-output '.tag'))
+  DIGEST=$(docker_list_tags alpine | grep "${VERSION_ID}" | jq --raw-output '.digest')
+  ALL_TAGS=( $(docker_list_tags alpine |  grep "${DIGEST}" | jq --raw-output '.tag') )
   [[ " ${ALL_TAGS[@]} " =~ " latest " ]] && echo "✅" || (
-    LATEST_DIGEST=$(docker-list-tags alpine | grep "latest" | jq --raw-output '.digest')
-    LATEST_TAGS=($(docker-list-tags alpine |  grep "${LATEST_DIGEST}" | grep -v "latest" | jq --raw-output '.tag'))
+    LATEST_DIGEST=$(docker_list_tags alpine | grep "latest" | jq --raw-output '.digest')
+    LATEST_TAGS=($(docker_list_tags alpine |  grep "${LATEST_DIGEST}" | grep -v "latest" | jq --raw-output '.tag'))
     (IFS=$'/' ; echo "🆕 new base image available with tags ${LATEST_TAGS[*]/#/v}")
   )
 )
