@@ -65,6 +65,11 @@ ARG SVU_VERSION=1.3.2
 ENV SVU_VERSION=$SVU_VERSION
 RUN wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b /usr/local/bin v${SVU_VERSION}
 
+# Venom
+ARG VENOM_VERSION=1.0.0-rc.4
+ENV VENOM_VERSION=$VENOM_VERSION
+ADD https://github.com/ovh/venom/releases/download/v${VENOM_VERSION}/venom.linux-amd64 /bin/venom
+
 COPY welcome.sh /root/welcome.sh
 
 WORKDIR /root
