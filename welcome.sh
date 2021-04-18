@@ -24,8 +24,8 @@ get_latest_released_version() {
 print_version() {
   AVAIL=$(get_latest_released_version $2 $3)
   [ "${AVAIL}" == "$4" ] && printf "%-20s %15s ✅\n" "$1" "$4" # ✔️ not working
-  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run './install.sh $3 ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
-  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run './install.sh $3 ${AVAIL}' to update\n" "$1" "$4" && return 0
+  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run 'instool $3 ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run 'instool $3 ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
   return 0
 }
 
