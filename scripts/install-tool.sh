@@ -55,6 +55,12 @@ case $1 in
     go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
     ;;
 
+  "changie")
+    CHANGIE_VERSION="$2"
+    wget -O- -nv https://github.com/miniscruff/changie/releases/download/v${CHANGIE_VERSION}/changie_${CHANGIE_VERSION}_linux_amd64.tar.gz | tar -xzO changie > /usr/local/bin/changie
+    chmod +x /usr/local/bin/changie
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;

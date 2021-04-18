@@ -62,6 +62,10 @@ get_delve_version() {
   dlv version 2>/dev/null | head -2 | tail -1 | cut -d' ' -f2 | sed -e 's/^v//' || echo -n "n/a" && return 0
 }
 
+get_changie_version() {
+  changie -v 2>/dev/null | cut -d' ' -f3 | sed -e 's/^v//' || echo -n "n/a" && return 0
+}
+
 figlet -c Go Devcontainer
 
 (
@@ -101,6 +105,8 @@ print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
 print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
 # Test helpers
 print_version "Venom" "ovh" "venom" "$(get_venom_version)"
+# Documentation helpers
+print_version "Changie" "miniscruff" "changie" "$(get_changie_version)"
 # Build helpers
 print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
 print_version "Neon" "c4s4" "neon" "$(get_neon_version)"

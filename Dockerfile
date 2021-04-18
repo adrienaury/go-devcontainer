@@ -84,6 +84,11 @@ ARG DELVE_VERSION=1.6.0
 ENV DELVE_VERSION=$DELVE_VERSION
 RUN go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
 
+# Changie
+ARG CHANGIE_VERSION=0.4.1
+RUN wget -O- -nv https://github.com/miniscruff/changie/releases/download/v${CHANGIE_VERSION}/changie_${CHANGIE_VERSION}_linux_amd64.tar.gz | tar -xzO changie > /usr/local/bin/changie \
+ && chmod +x /usr/local/bin/changie
+
 COPY welcome.sh /root/welcome.sh
 COPY scripts /root/scripts
 
