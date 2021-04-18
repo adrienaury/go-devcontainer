@@ -14,7 +14,7 @@ Alpine Linux v3.13.5 ✅
 Installed tools
 =============================================================================
 Github CLI                     1.9.1 ✅
-Neon                           1.5.0 ✅
+Neon                           1.5.1 ✅
 GolangCI Lint                 1.39.0 ✅
 GoReleaser                   0.162.0 ✅
 SVU                            1.3.2 ✅
