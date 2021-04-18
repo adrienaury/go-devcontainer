@@ -45,6 +45,16 @@ case $1 in
     chmod +x /usr/local/bin/venom
     ;;
 
+  "gopls")
+    GOPLS_VERSION="$2"
+    go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
+    ;;
+
+  "delve")
+    DELVE_VERSION="$2"
+    go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;

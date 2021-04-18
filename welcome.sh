@@ -23,9 +23,10 @@ get_latest_released_version() {
 
 print_version() {
   AVAIL=$(get_latest_released_version $2 $3)
+  ALIAS=${5:-$3}
   [ "${AVAIL}" == "$4" ] && printf "%-20s %15s ✅\n" "$1" "$4" # ✔️ not working
-  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run 'instool $3 ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
-  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run 'instool $3 ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
+  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run 'instool ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run 'instool ${ALIAS} ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
   return 0
 }
 
@@ -96,7 +97,7 @@ print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_ve
 print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
 print_version "Venom" "ovh" "venom" "$(get_venom_version)"
-print_version "Gopls" "golang" "tools" "$(get_gopls_version)"
+print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
 print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
 echo   "============================================================================="
 echo
