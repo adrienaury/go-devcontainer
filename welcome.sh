@@ -92,15 +92,19 @@ LATEST_GO_TAG=$(docker_list_tags golang | grep "${LATEST_GO_DIGEST}" | grep -m1 
 [[ "${LATEST_GO_TAG}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available ${LATEST_GO_TAG}"
 
 echo
-echo   "Installed tools"
-echo   "============================================================================="
-print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
-print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
-print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
-print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
-print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
-print_version "Venom" "ovh" "venom" "$(get_venom_version)"
+echo "Installed tools"
+echo "============================================================================="
+# VSCode Go Extension requirements (https://github.com/golang/vscode-go/blob/master/docs/tools.md)
 print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
 print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
-echo   "============================================================================="
+# Linters
+print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
+# Test helpers
+print_version "Venom" "ovh" "venom" "$(get_venom_version)"
+# Build helpers
+print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
+print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
+print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
+print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
+echo "============================================================================="
 echo
