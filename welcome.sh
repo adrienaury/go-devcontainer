@@ -6,11 +6,11 @@ set -o nounset
 # set -o xtrace
 
 curlcache() {
-  sh scripts/curlcache.sh "$@"
+  sh ~/scripts/curlcache.sh "$@"
 }
 
 docker_list_tags() {
-  bash scripts/docker-list-tags.sh "$@"
+  bash ~/scripts/docker-list-tags.sh "$@"
 }
 
 get_all_released_tag() {
