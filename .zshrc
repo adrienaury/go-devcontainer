@@ -22,5 +22,7 @@ bindkey '^[[3~' delete-char
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 alias instool="bash ~/scripts/install-tool.sh"
+alias curlcache="bash ~/scripts/curlcache.sh"
+alias docker-list-tags="bash ~/scripts/docker-list-tags.sh"
 
 bash ~/welcome.sh
