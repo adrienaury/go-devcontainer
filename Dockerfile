@@ -85,6 +85,7 @@ ENV DELVE_VERSION=$DELVE_VERSION
 RUN go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
 
 COPY welcome.sh /root/welcome.sh
+COPY scripts /root/scripts
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
