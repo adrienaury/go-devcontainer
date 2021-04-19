@@ -92,6 +92,6 @@ IMAGE=$1
 
 cache -e ${CACHE} -- dtags -r "${REPOSITORY}" -a "${ARCH}" -o "${OS}" -l "${MAX_PAGES}" -c "${CACHE}" ${IMAGE} \
   | jq --raw-output '.tag' \
-  | grep -e '^\d\+\.\d\+\.\d\+$' \
+  | grep -e '^\d\+\(\.\d\+\)*$' \
   | sort -V \
   | tail -1
