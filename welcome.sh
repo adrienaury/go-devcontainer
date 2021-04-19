@@ -5,20 +5,16 @@ set -o pipefail
 set -o nounset
 # set -o xtrace
 
-curlcache() {
-  sh ~/scripts/curlcache.sh "$@"
-}
-
 docker_list_tags() {
   bash ~/scripts/docker-list-tags.sh "$@"
 }
 
 get_all_released_tag() {
-  curlcache --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases" | jq ".[0].tag_name"
+  cache -- curl --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases" | jq ".[0].tag_name"
 }
 
 get_latest_released_version() {
-  curlcache --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases/latest" | jq --raw-output ".tag_name" | sed -e 's/^.*v//'
+  cache -- curl --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases/latest" | jq --raw-output ".tag_name" | sed -e 's/^.*v//'
 }
 
 print_version() {
