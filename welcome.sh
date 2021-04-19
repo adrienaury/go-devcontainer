@@ -71,13 +71,8 @@ figlet -c Go Devcontainer
 (
   source /etc/os-release
   echo -n "${NAME} v${VERSION_ID} "
-  DIGEST=$(docker_list_tags alpine | grep "${VERSION_ID}" | jq --raw-output '.digest')
-  ALL_TAGS=( $(docker_list_tags alpine |  grep "${DIGEST}" | jq --raw-output '.tag') )
-  [[ " ${ALL_TAGS[@]} " =~ " latest " ]] && echo "✅" || (
-    LATEST_DIGEST=$(docker_list_tags alpine | grep "latest" | jq --raw-output '.digest')
-    LATEST_TAGS=($(docker_list_tags alpine |  grep "${LATEST_DIGEST}" | grep -v "latest" | jq --raw-output '.tag'))
-    (IFS=$'/' ; echo "🆕 new base image available with tags ${LATEST_TAGS[*]/#/v}")
-  )
+  LATEST_ALPINE_VERSION=$(cache -- dtags alpine -c3600 -l1 -a amd64 | jq --raw-output '.tag' | grep -e '^\d\+\.\d\+\.\d\+$' | sort -V | tail -1)
+  [[ "${LATEST_ALPINE_VERSION}" == "${VERSION_ID}" ]] && echo "✅" || echo "🆕 new alpine version available v${LATEST_ALPINE_VERSION}"
 )
 
 DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
@@ -92,7 +87,7 @@ echo "├── Zsh v${ZSH_VERSION} ✅"
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
 echo -n "├── Go v${GO_VERSION#go} "
 LATEST_GO_TAG=$(cache -- dtags golang -c3600 -l1 -a amd64 | jq --raw-output '.tag' | grep -e '^\d\+\.\d\+\.\d\+$' | sort -V | tail -1)
-[[ "${LATEST_GO_TAG}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available ${LATEST_GO_TAG}"
+[[ "${LATEST_GO_TAG}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_TAG}"
 
 echo
 echo "Installed tools"
