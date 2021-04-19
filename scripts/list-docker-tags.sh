@@ -16,17 +16,18 @@ show_help() {
   echo "Retrieve a list of tags from dockerhub"
   echo
   echo "Options:"
-  echo "  -r, --repository string     Name of a repository"
-  echo "  -a, --architecture string   Filter on a specific architecture (e.g.: amd64), this can be a regex expression"
+  echo "  -r, --repository string     Name of a repository, default: library"
+  echo "  -a, --architecture string   Filter on a specific architecture (e.g.: amd64), this can be a regex expression, default: all architectures"
+  echo "  -l, --limit integer         Limit the number of results, this number is counted in hundreds (e.g.: a limit of 1 will return a maximum of 100 results), default to 10"
   echo
-  echo "Example: ${__base} -l 10 alpine"
+  echo "Example: ${__base} -l1 -a amd64 alpine"
   echo
   echo "Inspired by https://gist.github.com/bric3"
   echo "Adapted by https://gist.github.com/adrienaury"
 }
 
-CMD_SHORT_OPTS="r:a:h"
-CMD_LONG_OPTS="repository:,architecture:,help"
+CMD_SHORT_OPTS="r:a:l:h"
+CMD_LONG_OPTS="repository:,architecture:,limit:,help"
 
 ! PARSED=$(getopt --options="${CMD_SHORT_OPTS}" --longoptions="${CMD_LONG_OPTS}" --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -42,6 +43,7 @@ eval set -- "$PARSED"
 # defaults
 REPOSITORY=library
 ARCH=".*" # all architectures
+MAX_PAGES=10
 
 while true; do
   case "$1" in
@@ -55,6 +57,10 @@ while true; do
         ;;
     -a|--architecture)
         ARCH="$2"
+        shift 2
+        ;;
+    -l|--limit)
+        MAX_PAGES="$2"
         shift 2
         ;;
     --)
@@ -76,8 +82,9 @@ IMAGE=$1
 (
   url="https://registry.hub.docker.com/v2/repositories/${REPOSITORY}/${IMAGE}/tags/?page_size=100"
   counter=1
-  while [ -n "${url}" ]; do
+  while [ $counter -le ${MAX_PAGES} ] && [ -n "${url}" ]; do
     content=$(curl --silent "${url}")
+    ((counter++))
     url=$(jq -r '.next // empty' <<< "${content}")
     echo -n "${content}"
   done
