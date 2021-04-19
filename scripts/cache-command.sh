@@ -5,16 +5,20 @@ set -o pipefail
 set -o nounset
 # set -o xtrace
 
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file} .sh)"
+
 show_help() {
   echo
-  echo "Usage:   ${BASH_SOURCE[0]} [OPTIONS] -- COMMAND"
+  echo "Usage:   ${__base} [OPTIONS] -- COMMAND"
   echo
   echo "Cache the result of 'COMMAND'"
   echo
   echo "Options:"
   echo "  -e, --expiry integer     Timeout in seconds for the result to be discarded"
   echo
-  echo "Example: ${BASH_SOURCE[0]} -- curl -H 'Accept: application/vnd.github.v3+json' https://api.github.com/gists/6e1e9540235e43b28b7d0bc8a8afcc5214c1a3ab"
+  echo "Example: ${__base} -- curl -H 'Accept: application/vnd.github.v3+json' https://api.github.com/gists/4ec61ae619ec7b68e03cf4ee603a0645"
   echo
   echo "Thanks to https://gist.github.com/adrienaury/4ec61ae619ec7b68e03cf4ee603a0645"
 }
@@ -52,7 +56,7 @@ while true; do
         break
         ;;
     *)
-        echo "should be used like this : ${BASH_SOURCE[0]} [-e <timeout>] -- command ..."
+        echo "should be used like this : ${__base} [-e <timeout>] -- command ..."
         echo "the double dash is important"
         exit 3
         ;;

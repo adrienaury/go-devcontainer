@@ -92,7 +92,8 @@ RUN wget -O- -nv https://github.com/miniscruff/changie/releases/download/v${CHAN
 COPY welcome.sh /root/welcome.sh
 COPY scripts /root/scripts
 
-COPY scripts/cmdcache.sh /usr/local/bin/cache
+COPY scripts/cache-command.sh /usr/local/bin/cache
+COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
