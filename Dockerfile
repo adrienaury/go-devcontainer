@@ -59,7 +59,7 @@ ENV GOLANGCI_LINT_VERSION=$GOLANGCI_LINT_VERSION
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
 
 # GoReleaser
-ARG GORELEASER_VERSION=0.162.0
+ARG GORELEASER_VERSION=0.162.1
 ENV GORELEASER_VERSION=$GORELEASER_VERSION
 RUN wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b /usr/local/bin v${GORELEASER_VERSION}
 
