@@ -91,8 +91,7 @@ echo "├── Zsh v${ZSH_VERSION} ✅"
 
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
 echo -n "├── Go v${GO_VERSION#go} "
-LATEST_GO_DIGEST=$(docker_list_tags golang | grep -m1 latest | jq --raw-output '.digest' || :)
-LATEST_GO_TAG=$(docker_list_tags golang | grep "${LATEST_GO_DIGEST}" | grep -m1 -e '"\d\+\.\d\+\.\d\+"' | jq --raw-output '.tag' || :)
+LATEST_GO_TAG=$(cache -- dtags golang -c3600 -l1 -a amd64 | jq --raw-output '.tag' | grep -e '^\d\+\.\d\+\.\d\+$' | sort -V | tail -1)
 [[ "${LATEST_GO_TAG}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available ${LATEST_GO_TAG}"
 
 echo
