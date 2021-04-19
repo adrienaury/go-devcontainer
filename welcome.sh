@@ -5,10 +5,6 @@ set -o pipefail
 set -o nounset
 # set -o xtrace
 
-docker_list_tags() {
-  bash ~/scripts/docker-list-tags.sh "$@"
-}
-
 get_all_released_tag() {
   cache -- curl --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases" | jq ".[0].tag_name"
 }
@@ -67,7 +63,7 @@ figlet -c Go Devcontainer
 (
   source /etc/os-release
   echo -n "${NAME} v${VERSION_ID} "
-  LATEST_ALPINE_VERSION=$(cache -- dtags alpine -c3600 -l1 -a amd64 | jq --raw-output '.tag' | grep -e '^\d\+\.\d\+\.\d\+$' | sort -V | tail -1)
+  LATEST_ALPINE_VERSION=$(dlast alpine)
   [[ "${LATEST_ALPINE_VERSION}" == "${VERSION_ID}" ]] && echo "✅" || echo "🆕 new alpine version available v${LATEST_ALPINE_VERSION}"
 )
 
@@ -82,8 +78,8 @@ echo "├── Zsh v${ZSH_VERSION} ✅"
 
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
 echo -n "├── Go v${GO_VERSION#go} "
-LATEST_GO_TAG=$(cache -- dtags golang -c3600 -l1 -a amd64 | jq --raw-output '.tag' | grep -e '^\d\+\.\d\+\.\d\+$' | sort -V | tail -1)
-[[ "${LATEST_GO_TAG}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_TAG}"
+LATEST_GO_VERSION=$(dlast golang)
+[[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}"
 
 echo
 echo "Installed tools"
