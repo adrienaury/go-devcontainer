@@ -94,6 +94,7 @@ COPY scripts /root/scripts
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
+COPY scripts/install-tool.sh /usr/local/bin/instool
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
