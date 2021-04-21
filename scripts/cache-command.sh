@@ -17,6 +17,7 @@ show_help() {
   echo
   echo "Options:"
   echo "  -e, --expiry integer     Timeout in seconds for the result to be discarded"
+  echo "      --install string     Install the script with the given alias"
   echo
   echo "Example: ${__base} -- curl -H 'Accept: application/vnd.github.v3+json' https://api.github.com/gists/4ec61ae619ec7b68e03cf4ee603a0645"
   echo
@@ -24,7 +25,7 @@ show_help() {
 }
 
 CMD_SHORT_OPTS="e:h"
-CMD_LONG_OPTS="expiry:,help"
+CMD_LONG_OPTS="expiry:,install:,help"
 
 ! PARSED=$(getopt --options="${CMD_SHORT_OPTS}" --longoptions="${CMD_LONG_OPTS}" --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -44,6 +45,10 @@ while true; do
   case "$1" in
     h|--help)
         show_help
+        exit 0
+        ;;
+    --install)
+        cp ${__file} /usr/bin/$2
         exit 0
         ;;
     -e|--expiry)
