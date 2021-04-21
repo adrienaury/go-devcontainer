@@ -8,9 +8,9 @@ set -o nounset
 print_version() {
   AVAIL=$(glast $2/$3 | sed -e 's/^.*v//')
   ALIAS=${5:-$3}
-  [ "${AVAIL}" == "$4" ] && printf "%-20s %15s ✅\n" "$1" "$4" # ✔️ not working
-  [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run 'instool ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
-  [ "${AVAIL}" != "$4" ] && printf "%-20s %15s 🆕 run 'instool ${ALIAS} ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" == "$4" ] && printf "├── %-15s %10s ✅\n" "$1" "$4" # ✔️ not working
+  [ "$4" == "n/a" ] && printf "├── %-15s %10s ❌ run 'instool ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "├── %-15s %10s 🆕 run 'instool ${ALIAS} ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
   return 0
 }
 
@@ -75,8 +75,7 @@ LATEST_GO_VERSION=$(dlast golang)
 [[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}"
 
 echo
-echo "Installed tools"
-echo "============================================================================="
+echo "Development tools"
 # VSCode Go Extension requirements (https://github.com/golang/vscode-go/blob/master/docs/tools.md)
 print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
 print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
@@ -91,5 +90,4 @@ print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
 print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
 print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
 print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
-echo "============================================================================="
 echo
