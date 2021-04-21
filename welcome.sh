@@ -31,7 +31,8 @@ get_goreleaser_version() {
 }
 
 get_svu_version() {
-  svu --version 2>&1 | cut -d' ' -f3 || echo -n "n/a" && return 0
+  svu --version >/dev/null 2>&1 || echo -n "n/a" && return 0
+  svu --version 2>&1 >/dev/null | cut -d' ' -f3
 }
 
 get_venom_version() {
