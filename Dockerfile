@@ -21,6 +21,7 @@ ENV LANG=en_US.UTF-8 \
 RUN wget -O- -nv https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh \
  && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k \
  && rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git*
+ && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C /root/.cache/gitstatus gitstatusd-linux-x86_64
 ENV ZSH /root/.oh-my-zsh
 
 # Zsh Theme configuration
