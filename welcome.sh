@@ -58,22 +58,22 @@ figlet -c Go Devcontainer
 
 (
   source /etc/os-release
-  echo -n "${NAME} v${VERSION_ID} "
+  printf "%-14s %15s " "${NAME}" "v${VERSION_ID}"
   LATEST_ALPINE_VERSION=$(dlast alpine)
   [[ "${LATEST_ALPINE_VERSION}" == "${VERSION_ID}" ]] && echo "✅" || echo "🆕 new alpine version available v${LATEST_ALPINE_VERSION}"
 )
 
 DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
-echo "├── Docker Client v${DOCKER_CLI_VERSION} ✅"
+printf "├── %-15s %10s ✅\n" "Docker Client" "v${DOCKER_CLI_VERSION}"
 
 GIT_VERSION=$(git --version | cut -d' ' -f3 || :)
-echo "├── Git Client v${GIT_VERSION} ✅"
+printf "├── %-15s %10s ✅\n" "Git Client" "v${GIT_VERSION}"
 
 ZSH_VERSION=$(zsh --version | cut -d' ' -f2 || :)
-echo "├── Zsh v${ZSH_VERSION} ✅"
+printf "├── %-15s %10s ✅\n" "Zsh" "v${ZSH_VERSION}"
 
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
-echo -n "├── Go v${GO_VERSION#go} "
+printf "├── %-15s %10s " "Go" "v${GO_VERSION#go}"
 LATEST_GO_VERSION=$(dlast golang)
 [[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}"
 
