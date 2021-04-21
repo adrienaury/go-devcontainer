@@ -5,16 +5,8 @@ set -o pipefail
 set -o nounset
 # set -o xtrace
 
-get_all_released_tag() {
-  cache -- curl --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases" | jq ".[0].tag_name"
-}
-
-get_latest_released_version() {
-  cache -- curl --silent --header "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$1/$2/releases/latest" | jq --raw-output ".tag_name" | sed -e 's/^.*v//'
-}
-
 print_version() {
-  AVAIL=$(get_latest_released_version $2 $3)
+  AVAIL=$(glast $2/$3 | sed -e 's/^.*v//')
   ALIAS=${5:-$3}
   [ "${AVAIL}" == "$4" ] && printf "%-20s %15s ✅\n" "$1" "$4" # ✔️ not working
   [ "$4" == "n/a" ] && printf "%-20s %15s ❌ run 'instool ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
