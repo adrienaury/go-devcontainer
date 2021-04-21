@@ -47,7 +47,7 @@ RUN wget -O- -nv https://github.com/cli/cli/releases/download/v${GITHUBCLI_VERSI
  && chmod +x /usr/local/bin/gh
 
 # Neon
-ARG NEON_VERSION=1.5.1
+ARG NEON_VERSION=1.5.3
 ENV NEON_VERSION=$NEON_VERSION
 RUN git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git \
  && (cd neon/neon && go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION") \
@@ -96,6 +96,7 @@ COPY scripts/cache-command.sh /usr/local/bin/cache
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/install-tool.sh /usr/local/bin/instool
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
+COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
 
 WORKDIR /root
 ENTRYPOINT [ "/bin/zsh" ]
