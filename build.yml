@@ -1,0 +1,27 @@
+targets:
+  
+  info:
+    steps:
+    - $: 'git describe --tags --exact-match 2>/dev/null || git symbolic-ref -q --short HEAD'
+      1=: 'tag'
+      3x: true
+    - $: 'git rev-parse HEAD 2>/dev/null'
+      1=: 'commit'
+      3x: true
+    - 'date = now()'
+    - $: 'git config user.email'
+      1=: 'by'
+      3x: true
+    - print: |
+        TAG    = ={tag}
+        COMMIT = ={commit}
+        DATE   = ={date}
+        BY     = ={by}
+
+  build:
+    unless: 'newer("build/last", find(".", "Dockerfile", "**/*.sh", ".zshrc", ".p10k.zsh"))'
+    depends: 'info'
+    steps:
+    - mkdir: 'build'
+    - $: 'docker build -t adrienaury/go-devcontainer:={tag} .'
+    - touch: 'build/last'
