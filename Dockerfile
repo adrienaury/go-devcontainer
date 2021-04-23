@@ -1,5 +1,7 @@
 ARG ALPINE_VERSION=3.13
 ARG GO_VERSION=1.16.3
+ARG DOCKER_VERSION=20.10.6
+FROM docker:${DOCKER_VERSION} AS docker
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
 FROM alpine:${ALPINE_VERSION} AS go-devcontainer-light
 
@@ -37,7 +39,7 @@ ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin \
     GO111MODULE=on
 
 # Docker CLI
-RUN apk add -q --update --progress --no-cache docker-cli docker-compose
+COPY --from=docker /usr/local/bin/docker /usr/bin/docker
 
 # Other utilities
 RUN apk add -q --update --progress --no-cache jq bash curl figlet
@@ -49,6 +51,7 @@ COPY scripts/install-tool.sh /usr/local/bin/instool
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
 COPY scripts/go-updater.sh /usr/local/bin/goup
+COPY scripts/docker-updater.sh /usr/local/bin/doup
 
 # Install required development tools
 RUN instool gopls 0.6.10 \

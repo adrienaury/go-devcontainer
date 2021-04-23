@@ -64,7 +64,9 @@ figlet -c Go Devcontainer
 )
 
 DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
-printf "├── %-15s %10s ✅\n" "Docker Client" "v${DOCKER_CLI_VERSION}"
+DOCKER_CLI_VERSION_LATEST=$(dlast docker)
+printf "├── %-15s %10s " "Docker Client" "v${DOCKER_CLI_VERSION}"
+[[ "${DOCKER_CLI_VERSION_LATEST}" == "${DOCKER_CLI_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_CLI_VERSION_LATEST}"
 
 GIT_VERSION=$(git --version | cut -d' ' -f3 || :)
 printf "├── %-15s %10s ✅\n" "Git Client" "v${GIT_VERSION}"
