@@ -1,4 +1,16 @@
+default: 'help'
+
 targets:
+
+  help:
+    steps:
+    - color: 'cyan'
+      print: 'Available targets'
+    - print: 'help     print this message'
+    - print: 'info     print build informations'
+    - print: 'build    build docker images locally'
+    - print: 'publish  push docker images to Dockerhub'
+    - print: ''
   
   info:
     steps:
