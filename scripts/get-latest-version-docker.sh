@@ -19,6 +19,7 @@ show_help() {
   echo "  -r, --repository string     Name of a repository, default: library"
   echo "  -a, --architecture string   Filter on a specific architecture (e.g.: amd64), this can be a regex expression, default: amd64"
   echo "  -o, --os string             Filter on a specific operating system (e.g.: linux), this can be a regex expression, default: linux"
+  echo "  -f, --filter string         Filter tags with a regex, default: ^\d+(.\d+)+$"
   echo "  -l, --limit integer         Limit the number of results, this number is counted in hundreds (e.g.: a limit of 1 will return a maximum of 100 results), default: 1"
   echo "  -c, --cache integer         Cache curl result, default: 1 hour (3600)"
   echo "      --install string        Install the script with the given alias"
@@ -28,8 +29,8 @@ show_help() {
   echo "Author: https://github.com/adrienaury"
 }
 
-CMD_SHORT_OPTS="r:a:o:l:c:h"
-CMD_LONG_OPTS="repository:,architecture:,os:,limit:,cache:,install:,help"
+CMD_SHORT_OPTS="r:a:o:f:l:c:h"
+CMD_LONG_OPTS="repository:,architecture:,os:,filter:,limit:,cache:,install:,help"
 
 ! PARSED=$(getopt --options="${CMD_SHORT_OPTS}" --longoptions="${CMD_LONG_OPTS}" --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -46,6 +47,7 @@ eval set -- "$PARSED"
 REPOSITORY=library
 ARCH=amd64
 OS=linux
+FILTER='^\d\+\(\.\d\+\)\+$'
 MAX_PAGES=1
 CACHE=3600
 
@@ -69,6 +71,10 @@ while true; do
         ;;
     -o|--os)
         OS="$2"
+        shift 2
+        ;;
+    -f|--filter)
+        FILTER="$2"
         shift 2
         ;;
     -l|--limit)
@@ -97,6 +103,6 @@ IMAGE=$1
 
 cache -e ${CACHE} -- dtags -r "${REPOSITORY}" -a "${ARCH}" -o "${OS}" -l "${MAX_PAGES}" -c "${CACHE}" ${IMAGE} \
   | jq --raw-output '.tag' \
-  | grep -e '^\d\+\(\.\d\+\)\+$' \
+  | grep -e ${FILTER} \
   | sort -V \
   | tail -1

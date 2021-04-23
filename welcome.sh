@@ -69,7 +69,9 @@ printf "├── %-15s %10s " "Docker Client" "v${DOCKER_CLI_VERSION}"
 [[ "${DOCKER_CLI_VERSION_LATEST}" == "${DOCKER_CLI_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_CLI_VERSION_LATEST}"
 
 GIT_VERSION=$(git --version | cut -d' ' -f3 || :)
-printf "├── %-15s %10s ✅\n" "Git Client" "v${GIT_VERSION}"
+GIT_VERSION_LATEST=$(dlast -f '^v\d\+\(\.\d\+\)\+$' -r alpine git | sed -e 's/^v//')
+printf "├── %-15s %10s " "Git Client" "v${GIT_VERSION}"
+[[ "${GIT_VERSION_LATEST}" == "${GIT_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${GIT_VERSION_LATEST}"
 
 ZSH_VERSION=$(zsh --version | cut -d' ' -f2 || :)
 printf "├── %-15s %10s ✅\n" "Zsh" "v${ZSH_VERSION}"
