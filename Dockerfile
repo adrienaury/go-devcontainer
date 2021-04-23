@@ -54,12 +54,12 @@ RUN instool gopls 0.6.10 \
  && instool delve 1.6.0
 
 # Install all optional development tools
-RUN instool golangci-lint 1.39.0
- && instool venom         1.0.0-rc.4
- && instool changie       0.4.1
- && instool cli           1.9.2
- && instool neon          1.5.3
- && instool goreleaser    0.164.0
+RUN instool golangci-lint 1.39.0 \
+ && instool venom         1.0.0-rc.4 \
+ && instool changie       0.4.1 \
+ && instool cli           1.9.2 \
+ && instool neon          1.5.3 \
+ && instool goreleaser    0.164.0 \
  && instool svu           1.3.2
 
 ENTRYPOINT [ "/bin/zsh" ]
