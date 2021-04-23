@@ -48,6 +48,7 @@ COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/install-tool.sh /usr/local/bin/instool
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
+COPY scripts/go-updater.sh /usr/local/bin/goup
 
 # Install required development tools
 RUN instool gopls 0.6.10 \
