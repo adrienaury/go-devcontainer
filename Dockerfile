@@ -1,7 +1,7 @@
 ARG ALPINE_VERSION=3.13
 ARG GO_VERSION=1.16.3
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
-FROM alpine:${ALPINE_VERSION}
+FROM alpine:${ALPINE_VERSION} AS go-devcontainer-light
 
 # Timezones
 RUN apk add -q --update --progress --no-cache tzdata
@@ -53,6 +53,10 @@ COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
 RUN instool gopls 0.6.10 \
  && instool delve 1.6.0
 
+ENTRYPOINT [ "/bin/zsh" ]
+
+FROM go-devcontainer-light AS go-devcontainer
+
 # Install all optional development tools
 RUN instool golangci-lint 1.39.0 \
  && instool venom         1.0.0-rc.4 \
@@ -61,5 +65,3 @@ RUN instool golangci-lint 1.39.0 \
  && instool neon          1.5.3 \
  && instool goreleaser    0.164.0 \
  && instool svu           1.3.2
-
-ENTRYPOINT [ "/bin/zsh" ]
