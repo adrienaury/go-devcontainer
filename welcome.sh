@@ -74,7 +74,9 @@ printf "├── %-15s %10s " "Git Client" "v${GIT_VERSION}"
 [[ "${GIT_VERSION_LATEST}" == "${GIT_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${GIT_VERSION_LATEST}"
 
 ZSH_VERSION=$(zsh --version | cut -d' ' -f2 || :)
-printf "├── %-15s %10s ✅\n" "Zsh" "v${ZSH_VERSION}"
+ZSH_VERSION_LATEST=$(dlast -r zshusers zsh)
+printf "├── %-15s %10s " "Zsh" "v${ZSH_VERSION}"
+[[ "${ZSH_VERSION_LATEST}" == "${ZSH_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${ZSH_VERSION_LATEST}"
 
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
 printf "├── %-15s %10s " "Go" "v${GO_VERSION#go}"
