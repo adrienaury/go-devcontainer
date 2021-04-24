@@ -110,6 +110,33 @@ EOF
     fi
     ;;
 
+  "go-outline")
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go get -u github.com/ramya-rao-a/go-outline
+EOF
+    else
+    (
+      go get -u github.com/ramya-rao-a/go-outline
+    )
+    fi
+    ;;
+
+  "goplay")
+    GOPLAY_VERSION="$2"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install github.com/haya14busa/goplay/cmd/goplay@v${GOPLAY_VERSION}
+      echo ${GOPLAY_VERSION} > ~/.goplay
+EOF
+    else
+    (
+      go install github.com/haya14busa/goplay/cmd/goplay@v${GOPLAY_VERSION}
+      echo ${GOPLAY_VERSION} > ~/.goplay
+    )
+    fi
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;
