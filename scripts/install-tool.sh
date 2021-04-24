@@ -15,20 +15,36 @@ case $1 in
 
   "neon")
     NEON_VERSION="$2"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      cd ~
+      git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git
+      cd neon/neon
+      go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION"
+      rm -rf ~/neon
+EOF
+    else
     (
       cd ~
       git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git
       cd neon/neon
       go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION"
-      [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/neon"
       rm -rf ~/neon
     )
+    fi
     ;;
 
   "golangci-lint")
     GOLANGCI_LINT_VERSION="$2"
-    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
-    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/golangci-lint"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
+EOF
+    else
+    (
+      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
+    )
+    fi
     ;;
 
   "goreleaser")
@@ -49,14 +65,28 @@ case $1 in
 
   "gopls")
     GOPLS_VERSION="$2"
-    go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
-    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/gopls"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
+EOF
+    else
+    (
+      go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
+    )
+    fi
     ;;
 
   "delve")
     DELVE_VERSION="$2"
-    go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
-    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/dlv"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
+EOF
+    else
+    (
+      go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
+    )
+    fi
     ;;
 
   "changie")
