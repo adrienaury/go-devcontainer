@@ -52,33 +52,29 @@ COPY scripts/update-go.sh /usr/local/bin/goup
 COPY scripts/update-docker.sh /usr/local/bin/dockerup
 COPY scripts/update-git.sh /usr/local/bin/gitup
 
-# Install required development tools
-RUN instool gopls 0.6.10 \
- && instool delve 1.6.0
-
 RUN addgroup -g 1000 -S vscode \
  && adduser -S -s /bin/zsh -G vscode -D -u 1000 vscode \
  && cp -r /root/. /home/vscode \
- && chown -R vscode:vscode /home/vscode
+ && chown -R vscode:vscode /home/vscode \
+ && apk add -q --update --progress --no-cache su-exec sudo \
+ && echo vscode ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/vscode \
+ && chmod 0440 /etc/sudoers.d/vscode
 
-# USER vscode
+USER vscode
+
+# Install required development tools
+RUN sudo instool gopls 0.6.10 \
+ && sudo instool delve 1.6.0
 
 ENTRYPOINT [ "/bin/zsh" ]
 
 FROM go-devcontainer-light AS go-devcontainer
 
-USER root
-
 # Install all optional development tools
-RUN instool golangci-lint 1.39.0 \
- && instool venom         1.0.0-rc.4 \
- && instool changie       0.4.1 \
- && instool cli           1.9.2 \
- && instool neon          1.5.3 \
- && instool goreleaser    0.164.0 \
- && instool svu           1.3.2
-
-RUN cp -r /root/go/bin/. /home/vscode/go/bin \
- && chown -R vscode:vscode /home/vscode/go/bin
-
-# USER vscode
+RUN sudo instool golangci-lint 1.39.0 \
+ && sudo instool venom         1.0.0-rc.4 \
+ && sudo instool changie       0.4.1 \
+ && sudo instool cli           1.9.2 \
+ && sudo instool neon          1.5.3 \
+ && sudo instool goreleaser    0.164.0 \
+ && sudo instool svu           1.3.2
