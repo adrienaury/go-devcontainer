@@ -20,6 +20,7 @@ case $1 in
       git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git
       cd neon/neon
       go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION"
+      [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/neon"
       rm -rf ~/neon
     )
     ;;
@@ -27,6 +28,7 @@ case $1 in
   "golangci-lint")
     GOLANGCI_LINT_VERSION="$2"
     curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v$GOLANGCI_LINT_VERSION
+    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/golangci-lint"
     ;;
 
   "goreleaser")
@@ -48,11 +50,13 @@ case $1 in
   "gopls")
     GOPLS_VERSION="$2"
     go install golang.org/x/tools/gopls@v${GOPLS_VERSION}
+    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/gopls"
     ;;
 
   "delve")
     DELVE_VERSION="$2"
     go install github.com/go-delve/delve/cmd/dlv@v${DELVE_VERSION}
+    [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]] && chown "${SUDO_USER}" "${GOBIN-${GOPATH}/bin}/dlv"
     ;;
 
   "changie")
