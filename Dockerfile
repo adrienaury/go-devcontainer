@@ -68,7 +68,8 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
 
 # Install required development tools
 RUN sudo instool gopls 0.6.10 \
- && sudo instool delve 1.6.0
+ && sudo instool delve 1.6.0 \
+ && sudo instool gopkgs 2.1.2
 
 ENTRYPOINT [ "/bin/zsh" ]
 

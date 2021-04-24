@@ -95,6 +95,21 @@ EOF
     chmod +x /usr/local/bin/changie
     ;;
 
+  "gopkgs")
+    GOPKGS_VERSION="$2"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@v${GOPKGS_VERSION}
+      echo ${GOPKGS_VERSION} > ~/.gopkgs
+EOF
+    else
+    (
+      go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@v${GOPKGS_VERSION}
+      echo ${GOPKGS_VERSION} > ~/.gopkgs
+    )
+    fi
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;

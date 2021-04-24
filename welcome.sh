@@ -54,6 +54,10 @@ get_changie_version() {
   changie -v 2>/dev/null | cut -d' ' -f3 | sed -e 's/^v//' || echo -n "n/a" && return 0
 }
 
+get_gopkgs_version() {
+  cat ~/.gopkgs
+}
+
 figlet -c Go Devcontainer
 
 (
@@ -88,6 +92,7 @@ echo "Development tools"
 # VSCode Go Extension requirements (https://github.com/golang/vscode-go/blob/master/docs/tools.md)
 print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
 print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
+print_version "Gopkgs" "uudashr" "gopkgs" "$(get_gopkgs_version)"
 # Linters
 print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
 # Test helpers
