@@ -25,7 +25,6 @@ RUN wget -O- -nv https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master
  && rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git* \
  && mkdir -p /root/.cache/gitstatus \
  && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C /root/.cache/gitstatus gitstatusd-linux-x86_64
-ENV ZSH /root/.oh-my-zsh
 
 # Zsh Theme configuration
 COPY .zshrc /root/.zshrc
@@ -33,8 +32,7 @@ COPY .p10k.zsh /root/.p10k.zsh
 
 # Go
 COPY --from=go /usr/local/go /usr/local/go
-ENV GOPATH=/root/go
-ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin \
+ENV PATH=$PATH:/usr/local/go/bin \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
@@ -58,9 +56,18 @@ COPY scripts/update-git.sh /usr/local/bin/gitup
 RUN instool gopls 0.6.10 \
  && instool delve 1.6.0
 
+RUN addgroup -g 1000 -S vscode \
+ && adduser -S -s /bin/zsh -G vscode -D -u 1000 vscode \
+ && cp -r /root/. /home/vscode \
+ && chown -R vscode:vscode /home/vscode
+
+# USER vscode
+
 ENTRYPOINT [ "/bin/zsh" ]
 
 FROM go-devcontainer-light AS go-devcontainer
+
+USER root
 
 # Install all optional development tools
 RUN instool golangci-lint 1.39.0 \
@@ -70,3 +77,8 @@ RUN instool golangci-lint 1.39.0 \
  && instool neon          1.5.3 \
  && instool goreleaser    0.164.0 \
  && instool svu           1.3.2
+
+RUN cp -r /root/go/bin/. /home/vscode/go/bin \
+ && chown -R vscode:vscode /home/vscode/go/bin
+
+# USER vscode
