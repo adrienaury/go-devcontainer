@@ -5,21 +5,24 @@
    | |_| | (_) | | |_| |  __/\ V / (_| (_) | | | | || (_| | | | | |  __/ |   
     \____|\___/  |____/ \___| \_/ \___\___/|_| |_|\__\__,_|_|_| |_|\___|_|   
                                                                              
-Alpine Linux v3.13.5 ✅
-├── Docker Client v20.10.3 ✅
-├── Git Client v2.30.2 ✅
-├── Zsh v5.8 ✅
-├── Go v1.16.3 ✅
+Alpine Linux           v3.13.5 ✅
+├── Docker Client     v20.10.6 ✅
+├── Git Client         v2.30.2 ✅
+├── Zsh                   v5.8 ✅
+├── Go                 v1.16.3 ✅
 
-Installed tools
-=============================================================================
-Github CLI                     1.9.1 ✅
-Neon                           1.5.1 ✅
-GolangCI Lint                 1.39.0 ✅
-GoReleaser                   0.162.0 ✅
-SVU                            1.3.2 ✅
-Venom                     1.0.0-rc.4 ✅
-Gopls                         0.6.10 ✅
-Delve                          1.6.0 ✅
-=============================================================================
+Development tools
+├── Gopls               0.6.10 ✅
+├── Delve                1.6.0 ✅
+├── Gopkgs               2.1.2 ✅
+├── Goplay               1.0.0 ✅
+├── Gomodifytags        1.13.0 ✅
+├── Gotests              1.6.0 ✅
+├── GolangCI Lint       1.39.0 ✅
+├── Venom           1.0.0-rc.4 ✅
+├── Changie              0.4.1 ✅
+├── Github CLI           1.9.2 ✅
+├── Neon                 1.5.3 ✅
+├── GoReleaser         0.164.0 ✅
+├── SVU                  1.3.2 ✅
 ```
