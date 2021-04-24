@@ -152,6 +152,33 @@ EOF
     fi
     ;;
 
+  "impl")
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go get -u github.com/josharian/impl
+EOF
+    else
+    (
+      go get -u github.com/josharian/impl
+    )
+    fi
+    ;;
+
+  "gotests")
+    GOTESTS_VERSION="$2"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install github.com/cweill/gotests/gotests@v${GOTESTS_VERSION}
+      echo ${GOTESTS_VERSION} > ~/.gotests
+EOF
+    else
+    (
+      go install github.com/cweill/gotests/gotests@v${GOTESTS_VERSION}
+      echo ${GOTESTS_VERSION} > ~/.gotests
+    )
+    fi
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;

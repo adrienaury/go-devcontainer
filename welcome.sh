@@ -66,6 +66,10 @@ get_gomodifytags_version() {
   cat ~/.gomodifytags
 }
 
+get_gotests_version() {
+  cat ~/.gotests
+}
+
 figlet -c Go Devcontainer
 
 (
@@ -103,6 +107,7 @@ print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
 print_version "Gopkgs" "uudashr" "gopkgs" "$(get_gopkgs_version)"
 print_version "Goplay" "haya14busa" "goplay" "$(get_goplay_version)"
 print_version "Gomodifytags" "fatih" "gomodifytags" "$(get_gomodifytags_version)"
+print_version "Gotests" "cweill" "gotests" "$(get_gotests_version)"
 # Linters
 print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
 # Test helpers

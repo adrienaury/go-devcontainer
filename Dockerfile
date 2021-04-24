@@ -69,7 +69,12 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
 # Install required development tools
 RUN sudo instool gopls 0.6.10 \
  && sudo instool delve 1.6.0 \
- && sudo instool gopkgs 2.1.2
+ && sudo instool gopkgs 2.1.2 \
+ && sudo instool go-outline \
+ && sudo instool goplay 1.0.0 \
+ && sudo instool gomodifytags 1.13.0 \
+ && sudo instool impl \
+ && sudo instool gotests 1.6.0
 
 ENTRYPOINT [ "/bin/zsh" ]
 
