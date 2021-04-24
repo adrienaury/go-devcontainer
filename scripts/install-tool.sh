@@ -137,6 +137,21 @@ EOF
     fi
     ;;
 
+  "gomodifytags")
+    GOMODIFYTAGS_VERSION="$2"
+    if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      go install github.com/fatih/gomodifytags@v${GOMODIFYTAGS_VERSION}
+      echo ${GOMODIFYTAGS_VERSION} > ~/.gomodifytags
+EOF
+    else
+    (
+      go install github.com/fatih/gomodifytags@v${GOMODIFYTAGS_VERSION}
+      echo ${GOMODIFYTAGS_VERSION} > ~/.gomodifytags
+    )
+    fi
+    ;;
+
   *)
     echo "Unknown tool : $1"
     ;;
