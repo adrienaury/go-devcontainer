@@ -1,7 +1,9 @@
 ARG ALPINE_VERSION=3.13
 ARG GO_VERSION=1.16.3
 ARG DOCKER_VERSION=20.10.6
+ARG DOCKER_COMPOSE_VERSION=alpine-1.29.1
 FROM docker:${DOCKER_VERSION} AS docker
+FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
 FROM alpine:${ALPINE_VERSION} AS go-devcontainer-light
 
@@ -36,8 +38,9 @@ COPY .p10k.zsh /root/.p10k.zsh
 # Go
 COPY --from=go /usr/local/go /usr/local/go
 
-# Docker CLI
+# Docker CLI and docker-compose
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
+COPY --from=docker-compose /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # Other utilities
 RUN apk add -q --update --progress --no-cache jq bash curl figlet
@@ -50,6 +53,7 @@ COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
 COPY scripts/update-go.sh /usr/local/bin/goup
 COPY scripts/update-docker.sh /usr/local/bin/dockerup
+COPY scripts/update-docker-compose.sh /usr/local/bin/dockercup
 COPY scripts/update-git.sh /usr/local/bin/gitup
 
 RUN addgroup -g 1000 -S vscode \
