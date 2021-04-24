@@ -12,8 +12,6 @@ export LC_ALL='en_US.UTF-8'
 export LANGUAGE='en_US:en'
 export TERM=xterm
 export ZSH="${HOME}/.oh-my-zsh"
-export GOPATH="${HOME}/go"
-export PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin"
 
 # Fix some problems with key bindings
 bindkey '^[[H' beginning-of-line

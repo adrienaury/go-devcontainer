@@ -32,9 +32,6 @@ COPY .p10k.zsh /root/.p10k.zsh
 
 # Go
 COPY --from=go /usr/local/go /usr/local/go
-ENV PATH=$PATH:/usr/local/go/bin \
-    CGO_ENABLED=0 \
-    GO111MODULE=on
 
 # Docker CLI
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
@@ -58,9 +55,16 @@ RUN addgroup -g 1000 -S vscode \
  && chown -R vscode:vscode /home/vscode \
  && apk add -q --update --progress --no-cache su-exec sudo \
  && echo vscode ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/vscode \
- && chmod 0440 /etc/sudoers.d/vscode
+ && chmod 0440 /etc/sudoers.d/vscode \
+ && echo 'Defaults env_keep += "GOPATH"' >> /etc/sudoers
 
 USER vscode
+
+ENV GOPATH="/home/vscode/go"
+ENV GOBIN="${GOPATH}/bin"
+ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
 
 # Install required development tools
 RUN sudo instool gopls 0.6.10 \
