@@ -52,7 +52,7 @@ CACHE=0
 
 while true; do
   case "$1" in
-    h|--help)
+    -h|--help)
         show_help
         exit 0
         ;;
