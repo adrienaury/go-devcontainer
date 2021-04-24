@@ -35,6 +35,6 @@ targets:
     depends: 'info'
     steps:
     - mkdir: 'build'
-    - $: 'docker build -t adrienaury/go-devcontainer-light:={tag} --target go-devcontainer-light .'
-    - $: 'docker build -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
+    - $: 'sudo docker build -t adrienaury/go-devcontainer-light:={tag} --target go-devcontainer-light .'
+    - $: 'sudo docker build -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
     - touch: 'build/last'
