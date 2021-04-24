@@ -62,17 +62,20 @@ while true; do
   esac
 done
 
-[ $# -eq 0 ] && GO_VERSION=$(dlast golang) || GO_VERSION=$1
+CACHE=.cache
+mkdir -p ${CACHE}
+
+[ $# -eq 0 ] && GO_VERSION=$(dlast golang) || GO_VERSION=${1#v*}
 
 source /etc/os-release
 ALPINE_VERSION=${VERSION_ID%.*}
-mkdir -p .gocache
+mkdir -p ${CACHE}
 
-if [ ! -e .gocache/go-${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz ]; then
+if [ ! -e ${CACHE}/go-v${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz ]; then
   id=$(docker create golang:${GO_VERSION}-alpine${ALPINE_VERSION})
-  docker cp $id:/usr/local/go - > .gocache/go-${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz
+  docker cp $id:/usr/local/go - | gzip -9 > ${CACHE}/go-v${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz
   docker rm -v $id
 fi
 
 rm -rf /usr/local/go
-tar -C /usr/local -xf .gocache/go-${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz
+tar -C /usr/local -xzf ${CACHE}/go-v${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz

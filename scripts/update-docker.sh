@@ -62,12 +62,15 @@ while true; do
   esac
 done
 
-[ $# -eq 0 ] && VERSION=$(dlast docker) || VERSION=$1
+CACHE=.cache
+mkdir -p ${CACHE}
 
-if [ ! -e .gocache/docker-${VERSION}.tar.gz ]; then
+[ $# -eq 0 ] && VERSION=$(dlast docker) || VERSION=${1#v*}
+
+if [ ! -e ${CACHE}/docker-v${VERSION}.tar.gz ]; then
   id=$(docker create docker:${VERSION})
-  docker cp $id:/usr/local/bin/docker - > .gocache/docker-${VERSION}.tar.gz
+  docker cp $id:/usr/local/bin/docker - | gzip -9 > ${CACHE}/docker-v${VERSION}.tar.gz
   docker rm -v $id
 fi
 
-tar -C /usr/bin -xf .gocache/docker-${VERSION}.tar.gz
+tar -C /usr/bin -xzf ${CACHE}/docker-v${VERSION}.tar.gz

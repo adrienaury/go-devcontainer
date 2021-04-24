@@ -62,12 +62,15 @@ while true; do
   esac
 done
 
-[ $# -eq 0 ] && VERSION=$(dlast -f '^v\d\+\(\.\d\+\)\+$' -r alpine git) || VERSION=$1
+CACHE=.cache
+mkdir -p ${CACHE}
 
-if [ ! -e .gocache/docker-${VERSION}.tar.gz ]; then
+[ $# -eq 0 ] && VERSION=$(dlast -f '^v\d\+\(\.\d\+\)\+$' -r alpine git) || VERSION=v${1#v*}
+
+if [ ! -e ${CACHE}/git-${VERSION}.tar.gz ]; then
   id=$(docker create alpine/git:${VERSION})
-  docker cp $id:/usr/bin/git - > .gocache/git-${VERSION}.tar.gz
+  docker cp $id:/usr/bin/git - | gzip -9 > ${CACHE}/git-${VERSION}.tar.gz
   docker rm -v $id
 fi
 
-tar -C /usr/bin -xf .gocache/git-${VERSION}.tar.gz
+tar -C /usr/bin -xzf ${CACHE}/git-${VERSION}.tar.gz

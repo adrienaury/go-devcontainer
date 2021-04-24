@@ -66,12 +66,12 @@ figlet -c Go Devcontainer
 DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
 DOCKER_CLI_VERSION_LATEST=$(dlast docker)
 printf "├── %-15s %10s " "Docker Client" "v${DOCKER_CLI_VERSION}"
-[[ "${DOCKER_CLI_VERSION_LATEST}" == "${DOCKER_CLI_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_CLI_VERSION_LATEST}"
+[[ "${DOCKER_CLI_VERSION_LATEST}" == "${DOCKER_CLI_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_CLI_VERSION_LATEST}, run 'dockerup' to update"
 
 GIT_VERSION=$(git --version | cut -d' ' -f3 || :)
 GIT_VERSION_LATEST=$(dlast -f '^v\d\+\(\.\d\+\)\+$' -r alpine git | sed -e 's/^v//')
 printf "├── %-15s %10s " "Git Client" "v${GIT_VERSION}"
-[[ "${GIT_VERSION_LATEST}" == "${GIT_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${GIT_VERSION_LATEST}"
+[[ "${GIT_VERSION_LATEST}" == "${GIT_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${GIT_VERSION_LATEST}, run 'gitup' to update"
 
 ZSH_VERSION=$(zsh --version | cut -d' ' -f2 || :)
 ZSH_VERSION_LATEST=$(dlast -r zshusers zsh)
@@ -81,7 +81,7 @@ printf "├── %-15s %10s " "Zsh" "v${ZSH_VERSION}"
 GO_VERSION=$(go version | cut -d' ' -f3 || :)
 printf "├── %-15s %10s " "Go" "v${GO_VERSION#go}"
 LATEST_GO_VERSION=$(dlast golang)
-[[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}"
+[[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}, run 'goup' to update"
 
 echo
 echo "Development tools"
