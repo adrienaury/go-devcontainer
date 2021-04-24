@@ -5,6 +5,9 @@ FROM docker:${DOCKER_VERSION} AS docker
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
 FROM alpine:${ALPINE_VERSION} AS go-devcontainer-light
 
+# CA certificates
+RUN apk add -q --update --progress --no-cache ca-certificates
+
 # Timezones
 RUN apk add -q --update --progress --no-cache tzdata
 ENV TZ=
@@ -67,24 +70,24 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     GO111MODULE=on
 
 # Install required development tools
-RUN sudo instool gopls 0.6.10 \
- && sudo instool delve 1.6.0 \
- && sudo instool gopkgs 2.1.2 \
+RUN sudo instool gopls         0.6.10 \
+ && sudo instool delve         1.6.0 \
+ && sudo instool gopkgs        2.1.2 \
  && sudo instool go-outline \
- && sudo instool goplay 1.0.0 \
- && sudo instool gomodifytags 1.13.0 \
+ && sudo instool goplay        1.0.0 \
+ && sudo instool gomodifytags  1.13.0 \
  && sudo instool impl \
- && sudo instool gotests 1.6.0
+ && sudo instool gotests       1.6.0 \
+ && sudo instool golangci-lint 1.39.0
 
 ENTRYPOINT [ "/bin/zsh" ]
 
 FROM go-devcontainer-light AS go-devcontainer
 
 # Install all optional development tools
-RUN sudo instool golangci-lint 1.39.0 \
- && sudo instool venom         1.0.0-rc.4 \
- && sudo instool changie       0.4.1 \
- && sudo instool cli           1.9.2 \
- && sudo instool neon          1.5.3 \
- && sudo instool goreleaser    0.164.0 \
- && sudo instool svu           1.3.2
+RUN sudo instool venom      1.0.0-rc.4 \
+ && sudo instool changie    0.4.1 \
+ && sudo instool cli        1.9.2 \
+ && sudo instool neon       1.5.3 \
+ && sudo instool goreleaser 0.164.0 \
+ && sudo instool svu        1.3.2
