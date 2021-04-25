@@ -72,6 +72,7 @@ targets:
     doc: 'promote the project with a new tag based on git log history'
     steps:
     - $: 'git tag $(svu next || echo -n v0.1.0)'
+      2x: true
   
   build:
     doc: 'build docker images locally'
