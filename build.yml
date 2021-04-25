@@ -9,6 +9,7 @@ targets:
     - print: 'help     print this message'
     - print: 'info     print build informations'
     - print: 'build    build docker images locally'
+    - print: 'release  build docker images locally with tagged versions'
     - print: 'publish  push docker images to Dockerhub'
     - print: ''
   
@@ -17,6 +18,9 @@ targets:
     - $: 'git describe --tags --exact-match 2>/dev/null || git symbolic-ref -q --short HEAD'
       1=: 'tag'
       3x: true
+    - $: 'echo -n "={tag}" | sed -e s/^v//'
+      1=: 'version'
+      3x: true
     - $: 'git rev-parse HEAD 2>/dev/null'
       1=: 'commit'
       3x: true
@@ -24,11 +28,27 @@ targets:
     - $: 'git config user.email'
       1=: 'by'
       3x: true
+    - $: 'if expr match "={version}" "\d\+\.\d\+\.\d\+" 1>/dev/null 2>&1; then echo -n "yes"; else echo -n "no"; fi'
+      1=: 'is_release'
+      3x: true
+    - $: 'cut -f1 -d.'
+      <: '=version'
+      1=: 'version_major'
+      3x: true
+    - $: 'cut -f2 -d.'
+      <: '=version'
+      1=: 'version_minor'
+      3x: true
+    - $: 'cut -f3 -d.'
+      <: '=version'
+      1=: 'version_patch'
+      3x: true
     - print: |
-        TAG    = ={tag}
-        COMMIT = ={commit}
-        DATE   = ={date}
-        BY     = ={by}
+        TAG     = ={tag}
+        COMMIT  = ={commit}
+        DATE    = ={date}
+        BY      = ={by}
+        RELEASE = ={is_release} (={version_major}.={version_minor}.={version_patch})
 
   build:
     unless: 'newer("build/last", find(".", "Dockerfile", "**/*.sh", ".zshrc", ".p10k.zsh"))'
@@ -38,3 +58,12 @@ targets:
     - $: 'sudo docker build -t adrienaury/go-devcontainer-light:={tag} --target go-devcontainer-light .'
     - $: 'sudo docker build -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
     - touch: 'build/last'
+  
+  release:
+    unless: '"={is_release}" == "no"'
+    depends: 'build'
+    steps:
+    - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}'
+    - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}.={version_minor}'
+    - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}'
+    - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}.={version_minor}'
