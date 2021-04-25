@@ -1,8 +1,15 @@
 default: 'help'
-expose: ['help','info','build','release']
+expose: ['help','info','build','release','publish']
+configuration: ~/.dockerhub.yml
+# ~/.dockerhub.yml should contains:
+# DOCKERHUB_USER: <your dockerhub user>
+# DOCKERHUB_PASS: <your dockerhub password or a dockerhub token>
+
+properties:
+  latest: false
 
 targets:
-
+  
   help:
     doc: 'print this message'
     steps:
@@ -57,7 +64,7 @@ targets:
       then:
       - print: |-
           VERSION = ={version_major}.={version_minor}.={version_patch}
-
+  
   build:
     doc: 'build docker images locally'
     unless: 'newer("build/last", find(".", "Dockerfile", "**/*.sh", ".zshrc", ".p10k.zsh"))'
@@ -66,10 +73,10 @@ targets:
     - print: 'Executing build target'
       color: cyan
     - mkdir: 'build'
-    - $: 'sudo docker build -t adrienaury/go-devcontainer-light:={tag} --target go-devcontainer-light .'
-    - $: 'sudo docker build -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
-    - touch: 'build/last'
+  # - $: 'sudo docker build -q -t adrienaury/go-devcontainer:={tag}-light --target go-devcontainer-light .'
+    - $: 'sudo docker build -q --iidfile build/last -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
   
+  # run "neon -props '{latest: true}' release" to include latest tag
   release:
     doc: 'build docker images locally with tagged versions'
     # unless: 'is_release != "yes"' => is_release unknown variable, issue to open
@@ -77,13 +84,46 @@ targets:
     steps:
     - if: 'is_release == "yes"'
       then:
-      - print: 'Executing release target'
-        color: cyan
-      - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}'
-      - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}.={version_minor}'
+    # - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:v={version_major}-light'
+    # - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:v={version_major}.={version_minor}-light'
+    # - if: 'latest'
+    #   then:
+    #   - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:latest-light'
       - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}'
       - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}.={version_minor}'
-      - $: 'sudo docker images | grep adrienaury/go-devcontainer'
+      - if: 'latest'
+        then:
+        - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:latest'
+      - $: 'sudo docker images --no-trunc | grep $(cat build/last)'
+      else:
+      - print: 'Skipping release target (not a release)'
+        color: red
+  
+  docker-login:
+    steps:
+    - $: 'sudo docker login -u ={DOCKERHUB_USER} -p ={DOCKERHUB_PASS}'
+      2x: true
+  
+  # run "neon -props '{latest: true}' publish" to include latest tag
+  publish:
+    doc: 'push docker images to Dockerhub'
+    # unless: 'is_release != "yes"' => is_release unknown variable, issue to open
+    depends: ['info','release','docker-login']
+    steps:
+    - if: 'is_release == "yes"'
+      then:
+    # - $: 'sudo docker push adrienaury/go-devcontainer:={tag}-light'
+    # - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}-light'
+    # - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}-light'
+    # - if: 'latest'
+    #   then:
+    #   - $: 'sudo docker push adrienaury/go-devcontainer:latest-light'
+      - $: 'sudo docker push adrienaury/go-devcontainer:={tag}'
+      - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}'
+      - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}'
+      - if: 'latest'
+        then:
+        - $: 'sudo docker push adrienaury/go-devcontainer:latest'
       else:
       - print: 'Skipping release target (not a release)'
         color: red
