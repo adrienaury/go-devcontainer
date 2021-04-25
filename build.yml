@@ -73,6 +73,7 @@ targets:
     steps:
     - $: 'git tag $(svu next || echo -n v0.1.0)'
       2x: true
+    - $: 'echo Promoted to $(svu current)'
   
   build:
     doc: 'build docker images locally'
