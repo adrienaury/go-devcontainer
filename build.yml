@@ -1,9 +1,12 @@
 default: 'help'
+expose: ['help','info','build','release']
 
 targets:
 
   help:
+    doc: 'print this message'
     steps:
+    # - $: 'neon -info' => incorrect order, issue to open
     - color: 'cyan'
       print: 'Available targets'
     - print: 'help     print this message'
@@ -14,6 +17,7 @@ targets:
     - print: ''
   
   info:
+    doc: 'print build informations'
     steps:
     - $: 'git describe --tags --exact-match 2>/dev/null || git symbolic-ref -q --short HEAD'
       1=: 'tag'
@@ -43,27 +47,43 @@ targets:
       <: '=version'
       1=: 'version_patch'
       3x: true
-    - print: |
+    - print: |-
         TAG     = ={tag}
         COMMIT  = ={commit}
         DATE    = ={date}
         BY      = ={by}
-        RELEASE = ={is_release} (={version_major}.={version_minor}.={version_patch})
+        RELEASE = ={is_release}
+    - if: 'is_release == "yes"'
+      then:
+      - print: |-
+          VERSION = ={version_major}.={version_minor}.={version_patch}
 
   build:
+    doc: 'build docker images locally'
     unless: 'newer("build/last", find(".", "Dockerfile", "**/*.sh", ".zshrc", ".p10k.zsh"))'
     depends: 'info'
     steps:
+    - print: 'Executing build target'
+      color: cyan
     - mkdir: 'build'
     - $: 'sudo docker build -t adrienaury/go-devcontainer-light:={tag} --target go-devcontainer-light .'
     - $: 'sudo docker build -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
     - touch: 'build/last'
   
   release:
-    unless: '"={is_release}" == "no"'
-    depends: 'build'
+    doc: 'build docker images locally with tagged versions'
+    # unless: 'is_release != "yes"' => is_release unknown variable, issue to open
+    depends: ['info','build']
     steps:
-    - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}'
-    - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}.={version_minor}'
-    - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}'
-    - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}.={version_minor}'
+    - if: 'is_release == "yes"'
+      then:
+      - print: 'Executing release target'
+        color: cyan
+      - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}'
+      - $: 'sudo docker tag adrienaury/go-devcontainer-light:={tag} adrienaury/go-devcontainer-light:v={version_major}.={version_minor}'
+      - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}'
+      - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}.={version_minor}'
+      - $: 'sudo docker images | grep adrienaury/go-devcontainer'
+      else:
+      - print: 'Skipping release target (not a release)'
+        color: red
