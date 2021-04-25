@@ -1,5 +1,5 @@
 default: 'help'
-expose: ['help','info','build','release','publish']
+expose: ['help','info','promote','build','release','publish']
 configuration: ~/.dockerhub.yml
 # ~/.dockerhub.yml should contains:
 # DOCKERHUB_USER: <your dockerhub user>
@@ -16,12 +16,15 @@ targets:
     # - $: 'neon -info' => incorrect order, issue to open
     - color: 'cyan'
       print: 'Available targets'
+    - print: ''
     - print: 'help     print this message'
     - print: 'info     print build informations'
-    - print: 'build    build docker images locally'
-    - print: 'release  build docker images locally with tagged versions'
-    - print: 'publish  push docker images to Dockerhub'
+    - print: 'promote  promote the project with a new tag based on git log history'
+    - print: 'build    build docker images locally [will trigger: info]'
+    - print: 'release  build docker images locally with tagged versions [will trigger: info->build]'
+    - print: 'publish  publish docker images to Dockerhub [will trigger: info->build->release]'
     - print: ''
+    - print: 'Example : neon -props "{latest: true}" promote publish'
   
   info:
     doc: 'print build informations'
@@ -64,6 +67,11 @@ targets:
       then:
       - print: |-
           VERSION = ={version_major}.={version_minor}.={version_patch}
+  
+  promote:
+    doc: 'promote the project with a new tag based on git log history'
+    steps:
+    - $: 'git tag $(svu next)'
   
   build:
     doc: 'build docker images locally'
