@@ -1,28 +1,5 @@
-```
-     ____         ____                            _        _                 
-    / ___| ___   |  _ \  _____   _____ ___  _ __ | |_ __ _(_)_ __   ___ _ __ 
-   | |  _ / _ \  | | | |/ _ \ \ / / __/ _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
-   | |_| | (_) | | |_| |  __/\ V / (_| (_) | | | | || (_| | | | | |  __/ |   
-    \____|\___/  |____/ \___| \_/ \___\___/|_| |_|\__\__,_|_|_| |_|\___|_|   
-                                                                             
-Alpine Linux           v3.13.5 ✅
-├── Docker Client     v20.10.6 ✅
-├── Git Client         v2.30.2 ✅
-├── Zsh                   v5.8 ✅
-├── Go                 v1.16.3 ✅
+# Go Devcontainer
 
-Development tools
-├── Gopls               0.6.10 ✅
-├── Delve                1.6.0 ✅
-├── Gopkgs               2.1.2 ✅
-├── Goplay               1.0.0 ✅
-├── Gomodifytags        1.13.0 ✅
-├── Gotests              1.6.0 ✅
-├── GolangCI Lint       1.39.0 ✅
-├── Venom           1.0.0-rc.4 ✅
-├── Changie              0.4.1 ✅
-├── Github CLI           1.9.2 ✅
-├── Neon                 1.5.3 ✅
-├── GoReleaser         0.164.0 ✅
-├── SVU                  1.3.2 ✅
-```
+A Go development container that help you keeping everything up to date.
+
+![Demo](demo.gif)
