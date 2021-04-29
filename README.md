@@ -18,7 +18,7 @@ Details are available on [the official Visual Studio documentation](https://code
 
 Create a file `.devcontainer/devcontainer.json` in the root of your project.
 
-```json
+```javascript
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.166.1/containers/docker-existing-dockerfile
 {
