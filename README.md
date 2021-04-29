@@ -19,11 +19,11 @@ Details are available on [the official Visual Studio documentation](https://code
 Create a file `.devcontainer/devcontainer.json` in the root of your project.
 
 ```javascript
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.166.1/containers/docker-existing-dockerfile
+// For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "Go Devcontainer",
 
+	// this will always use the latest release, but it's also possible to stick to a specific release
 	"image": "adrienaury/go-devcontainer:latest",
 
 	// Set *default* container specific settings.json values on container create.
@@ -34,21 +34,58 @@ Create a file `.devcontainer/devcontainer.json` in the root of your project.
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": ["golang.go"],
 
-	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "git config --local core.hooksPath githooks",
-
-	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+	// Needed when using a ptrace-based debugger like C++, Go, and Rust
 	"runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 
-	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+	// Needed to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
-	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+	// Needed to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }
 ```
 
 Then use `F1` key or `Ctrl+Shift+P` and use the `Remote-Containers: Rebuild and Reopen in Container` option.
+
+### Keep your workspace up to date
+
+When starting a new terminal inside the container, a message will tell you if new versions are available. It will also print the command to use in order to update the tool.
+
+```
+     ____         ____                            _        _                 
+    / ___| ___   |  _ \  _____   _____ ___  _ __ | |_ __ _(_)_ __   ___ _ __ 
+   | |  _ / _ \  | | | |/ _ \ \ / / __/ _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
+   | |_| | (_) | | |_| |  __/\ V / (_| (_) | | | | || (_| | | | | |  __/ |   
+    \____|\___/  |____/ \___| \_/ \___\___/|_| |_|\__\__,_|_|_| |_|\___|_|   
+                                                                             
+Alpine Linux           v3.13.5 ✅
+├── Docker Client     v20.10.6 ✅
+├── Docker Compose     v1.29.1 ✅
+├── Git Client         v2.30.2 ✅
+├── Zsh                   v5.8 ✅
+├── Go                 v1.16.3 ✅
+
+Development tools
+├── Gopls                0.6.9 🆕 run 'sudo instool gopls 0.6.10' to update to latest version
+├── Delve                1.6.0 ✅
+├── Gopkgs               2.1.2 ✅
+├── Goplay               1.0.0 ✅
+├── Gomodifytags        1.13.0 ✅
+├── Gotests              1.6.0 ✅
+├── GolangCI Lint       1.39.0 ✅
+├── Venom           1.0.0-rc.4 ✅
+├── Changie              0.4.1 ✅
+├── Github CLI           1.9.2 ✅
+├── Neon                 1.5.3 ✅
+├── GoReleaser         0.164.0 ✅
+├── SVU                  1.3.2 ✅
+```
+
+Just type the command in a terminal to update.
+
+```console
+$ sudo instool gopls 0.6.10
+```
 
 ## Contributing
 
