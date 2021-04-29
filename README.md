@@ -24,7 +24,7 @@ Create a file `.devcontainer/devcontainer.json` in the root of your project.
 {
 	"name": "Go Devcontainer",
 
-    "image": "adrienaury/go-devcontainer:latest",
+	"image": "adrienaury/go-devcontainer:latest",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
