@@ -9,6 +9,7 @@ A Go development container that help you keeping everything up to date.
 ### Prerequisites
 
 You need :
+
 - Visual Studio Code ([download](https://code.visualstudio.com/)) with the [Remote - Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed.
 - Docker Desktop (Windows, macOS) or Docker CE/EE (Linux)
 
@@ -21,27 +22,27 @@ Create a file `.devcontainer/devcontainer.json` in the root of your project.
 ```javascript
 // For format details, see https://aka.ms/devcontainer.json.
 {
-	"name": "Go Devcontainer",
+  "name": "Go Devcontainer",
 
-	// this will always use the latest release, but it's also possible to stick to a specific release
-	"image": "adrienaury/go-devcontainer:latest",
+  // this will always use the latest release, but it's also possible to stick to a specific release
+  "image": "adrienaury/go-devcontainer:latest",
 
-	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/zsh"
-	},
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/zsh"
+  },
 
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": ["golang.go"],
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": ["golang.go"],
 
-	// Needed when using a ptrace-based debugger like C++, Go, and Rust
-	"runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+  // Needed when using a ptrace-based debugger like C++, Go, and Rust
+  "runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 
-	// Needed to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
-	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+  // Needed to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+  "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
-	// Needed to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+  // Needed to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "vscode"
 }
 ```
 
@@ -51,7 +52,7 @@ Then use `F1` key or `Ctrl+Shift+P` and use the `Remote-Containers: Rebuild and 
 
 When starting a new terminal inside the container, a message will tell you if new versions are available. It will also print the command to use in order to update the tool.
 
-```
+```text
      ____         ____                            _        _                 
     / ___| ___   |  _ \  _____   _____ ___  _ __ | |_ __ _(_)_ __   ___ _ __ 
    | |  _ / _ \  | | | |/ _ \ \ / / __/ _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
@@ -84,7 +85,7 @@ Development tools
 Just type the command in a terminal to update.
 
 ```console
-$ sudo instool gopls 0.6.10
+sudo instool gopls 0.6.10
 ```
 
 ## Contributing
