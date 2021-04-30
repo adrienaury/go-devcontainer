@@ -10,12 +10,25 @@
 	"dockerFile": "../Dockerfile",
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"terminal.integrated.shell.linux": null
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [],
+	"extensions": [
+		"eamodio.gitlens",
+		"donjayamanne.githistory",
+		"DavidAnson.vscode-markdownlint",
+		"esbenp.prettier-vscode",
+		"yzhang.markdown-all-in-one",
+		"ms-azuretools.vscode-docker",
+		"shardulm94.trailing-spaces",
+		"vscode-icons-team.vscode-icons",
+		"johnpapa.vscode-peacock",
+		"aaron-bond.better-comments",
+		"quicktype.quicktype",
+		"spikespaz.vscode-smoothtype",
+	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
