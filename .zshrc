@@ -25,4 +25,5 @@ alias docker-compose="sudo docker-compose"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-bash ~/welcome.sh
+# welcome message is computed every 12 hours
+cache -e 43200 -- bash ~/welcome.sh
