@@ -6,8 +6,7 @@ set -o nounset
 # set -o xtrace
 
 print_version() {
-  # random cache timeout so version check do not occur all at the same time
-  AVAIL=$(cache -e $(shuf -i 43200-86400 -n 1) -- glast $2/$3 | sed -e 's/^.*v//')
+  AVAIL=$(glast $2/$3 | sed -e 's/^.*v//')
   ALIAS=${5:-$3}
   [ "${AVAIL}" == "$4" ] && printf "├── %-15s %10s ✅\n" "$1" "$4" # ✔️ not working
   [ "$4" == "n/a" ] && printf "├── %-15s %10s ❌ run 'sudo instool ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
