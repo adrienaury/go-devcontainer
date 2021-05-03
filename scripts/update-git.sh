@@ -74,3 +74,4 @@ if [ ! -e ${CACHE}/git-${VERSION}.tar.gz ]; then
 fi
 
 tar -C /usr/bin -xzf ${CACHE}/git-${VERSION}.tar.gz
+cache -d -- bash ~/welcome.sh

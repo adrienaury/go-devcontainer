@@ -183,3 +183,5 @@ EOF
     echo "Unknown tool : $1"
     ;;
 esac
+
+cache -d -- bash ~/welcome.sh

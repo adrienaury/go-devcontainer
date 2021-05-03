@@ -17,6 +17,7 @@ show_help() {
   echo
   echo "Options:"
   echo "  -e, --expiry integer     Timeout in seconds for the result to be discarded"
+  echo "  -d, --delete             Delete cache data associated with the command"
   echo "      --install string     Install the script with the given alias"
   echo
   echo "Example: ${__base} -- curl -H 'Accept: application/vnd.github.v3+json' https://api.github.com/gists/4ec61ae619ec7b68e03cf4ee603a0645"
@@ -24,8 +25,8 @@ show_help() {
   echo "Thanks to https://gist.github.com/adrienaury/4ec61ae619ec7b68e03cf4ee603a0645"
 }
 
-CMD_SHORT_OPTS="e:h"
-CMD_LONG_OPTS="expiry:,install:,help"
+CMD_SHORT_OPTS="e:dh"
+CMD_LONG_OPTS="expiry:,delete,install:,help"
 
 ! PARSED=$(getopt --options="${CMD_SHORT_OPTS}" --longoptions="${CMD_LONG_OPTS}" --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -38,8 +39,12 @@ fi
 # read getopt’s output this way to handle the quoting right:
 eval set -- "$PARSED"
 
+# contants
+DIR="${HOME}/.cmdcache"
+
 # default expiration for cache: 1 hour
 EXPIRY=3600
+DELETE=false
 
 while true; do
   case "$1" in
@@ -50,6 +55,10 @@ while true; do
     --install)
         cp ${__file} /usr/bin/$2
         exit 0
+        ;;
+    -d|--delete)
+        DELETE=true
+        shift
         ;;
     -e|--expiry)
         EXPIRY="$2"
@@ -70,9 +79,11 @@ done
 
 [ $# -eq 0 ] && show_help && exit 0
 
-DIR="${HOME}/.cmdcache"
 mkdir -p "${DIR}"
 HASH=$(echo -n "$@" | md5sum | awk '{print $1}')
 CACHE="${DIR}/${HASH}"
-(test -f "${CACHE}" && [ $(expr $(date +%s) - $(date -r "${CACHE}" +%s)) -le ${EXPIRY} ] || exec "$@" > "${CACHE}")
-cat "${CACHE}"
+if [ "${DELETE}" == "true" ]; then
+    rm -f ${CACHE}
+else
+    (test -f "${CACHE}" && [ $(expr $(date +%s) - $(date -r "${CACHE}" +%s)) -le ${EXPIRY} ] && cat "${CACHE}" || exec "$@" | tee "${CACHE}")
+fi

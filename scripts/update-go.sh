@@ -79,3 +79,4 @@ fi
 
 rm -rf /usr/local/go
 tar -C /usr/local -xzf ${CACHE}/go-v${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz
+cache -d -- bash ~/welcome.sh

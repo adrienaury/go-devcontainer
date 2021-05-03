@@ -74,3 +74,4 @@ if [ ! -e ${CACHE}/docker-compose-v${VERSION}.tar.gz ]; then
 fi
 
 tar -C /usr/bin -xzf ${CACHE}/docker-compose-v${VERSION}.tar.gz
+cache -d -- bash ~/welcome.sh
