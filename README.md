@@ -6,6 +6,8 @@ A Go development container that help you keeping everything up to date.
 
 ## Usage
 
+The easiest way to use this devcontainer is to use the [Go Template](https://github.com/adrienaury/go-template). The Go Template is pre-configured, it's very easy to setup.
+
 ### Prerequisites
 
 You need :
