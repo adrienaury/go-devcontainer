@@ -74,4 +74,14 @@ if [ ! -e ${CACHE}/git-${VERSION}.tar.gz ]; then
 fi
 
 tar -C /usr/bin -xzf ${CACHE}/git-${VERSION}.tar.gz
-cache -d -- bash ~/welcome.sh
+
+# invalidate cache for welcome page
+if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      cache -d -- bash ~/welcome.sh
+EOF
+    else
+    (
+      cache -d -- bash ~/welcome.sh
+    )
+fi

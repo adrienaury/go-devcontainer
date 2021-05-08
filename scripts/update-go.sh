@@ -79,4 +79,14 @@ fi
 
 rm -rf /usr/local/go
 tar -C /usr/local -xzf ${CACHE}/go-v${GO_VERSION}-alpine${ALPINE_VERSION}.tar.gz
-cache -d -- bash ~/welcome.sh
+
+# invalidate cache for welcome page
+if [[ "${USER-n/a}" == "root" && "${SUDO_USER-n/a}" != "n/a" ]]; then
+      su-exec ${SUDO_USER} bash << EOF
+      cache -d -- bash ~/welcome.sh
+EOF
+    else
+    (
+      cache -d -- bash ~/welcome.sh
+    )
+fi
