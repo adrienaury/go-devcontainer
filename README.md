@@ -87,7 +87,7 @@ Development tools
 Just type the command in a terminal to update.
 
 ```console
-sudo up gopls 0.6.10
+up gopls 0.6.10
 ```
 
 ## Contributing

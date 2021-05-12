@@ -4,11 +4,11 @@ ARG DOCKER_VERSION=20.10.6
 FROM docker:${DOCKER_VERSION} AS docker
 
 ####################################################################################
-## go-devcontainer-debian-ci stage                                                ##
+## go-devcontainer-ci-debian stage                                                ##
 ##   contains minimal setup to run on a CI platform                               ##
 ####################################################################################
 
-FROM bitnami/minideb:${DEBIAN_VERSION} AS go-devcontainer-debian-ci
+FROM bitnami/minideb:${DEBIAN_VERSION} AS go-devcontainer-ci-debian
 
 RUN install_packages \
     ca-certificates \
@@ -44,11 +44,11 @@ RUN    up golangci-lint 1.40.0 \
     && go clean -cache -testcache
 
 ####################################################################################
-## go-devcontainer-debian-slim stage                                              ##
+## go-devcontainer-slim-debian stage                                              ##
 ##   contains a slim setup for development usage                                  ##
 ####################################################################################
 
-FROM go-devcontainer-debian-ci AS go-devcontainer-debian-slim
+FROM go-devcontainer-ci-debian AS go-devcontainer-slim-debian
 
 USER root
 
@@ -105,11 +105,11 @@ COPY scripts/update-git-debian.sh /usr/local/bin/up-git
 ENTRYPOINT [ "/bin/zsh" ]
 
 ####################################################################################
-## go-devcontainer-debian stage                                                   ##
+## go-devcontainer-full-debian stage                                              ##
 ##   contains a full setup for development usage                                  ##
 ####################################################################################
 
-FROM go-devcontainer-debian-slim AS go-devcontainer-debian
+FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
 RUN    up gopls         0.6.11 \

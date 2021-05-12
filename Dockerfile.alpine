@@ -8,11 +8,11 @@ FROM docker/compose:alpine-${DOCKER_COMPOSE_VERSION} AS docker-compose
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
 
 ####################################################################################
-## go-devcontainer-alpine-ci stage                                                ##
+## go-devcontainer-ci-alpine stage                                                ##
 ##   contains minimal setup to run on a CI platform                               ##
 ####################################################################################
 
-FROM alpine:${ALPINE_VERSION} AS go-devcontainer-alpine-ci
+FROM alpine:${ALPINE_VERSION} AS go-devcontainer-ci-alpine
 
 # Required packages for CI
 RUN apk add -q --update --progress --no-cache \
@@ -48,11 +48,11 @@ RUN    up golangci-lint 1.40.0 \
     && go clean -cache -testcache
 
 ####################################################################################
-## go-devcontainer-alpine-slim stage                                              ##
+## go-devcontainer-slim-alpine stage                                              ##
 ##   contains a slim setup for development usage                                  ##
 ####################################################################################
 
-FROM go-devcontainer-alpine-ci AS go-devcontainer-alpine-slim
+FROM go-devcontainer-ci-alpine AS go-devcontainer-slim-alpine
 
 USER root
 
@@ -101,11 +101,11 @@ COPY scripts/update-git.sh /usr/local/bin/up-git
 ENTRYPOINT [ "/bin/zsh" ]
 
 ####################################################################################
-## go-devcontainer-alpine stage                                                   ##
+## go-devcontainer-full-alpine stage                                              ##
 ##   contains a full setup for development usage                                  ##
 ####################################################################################
 
-FROM go-devcontainer-alpine-slim AS go-devcontainer-alpine
+FROM go-devcontainer-slim-alpine AS go-devcontainer-full-alpine
 
 # These tools are usually installed by VSCode golang extension
 RUN    up gopls         0.6.11 \
