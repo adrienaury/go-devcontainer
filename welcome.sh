@@ -9,8 +9,8 @@ print_version() {
   AVAIL=$(glast $2/$3 | sed -e 's/^.*v//')
   ALIAS=${5:-$3}
   [ "${AVAIL}" == "$4" ] && printf "├── %-15s %10s ✅\n" "$1" "$4" # ✔️ not working
-  [ "$4" == "n/a" ] && printf "├── %-15s %10s ❌ run 'sudo up ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
-  [ "${AVAIL}" != "$4" ] && printf "├── %-15s %10s 🆕 run 'sudo up ${ALIAS} ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
+  [ "$4" == "n/a" ] && printf "├── %-15s %10s ❌ run 'up ${ALIAS} ${AVAIL}' to install latest version\n" "$1" "$4" && return 0
+  [ "${AVAIL}" != "$4" ] && printf "├── %-15s %10s 🆕 run 'up ${ALIAS} ${AVAIL}' to update to latest version\n" "$1" "$4" && return 0
   return 0
 }
 
