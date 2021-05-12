@@ -67,6 +67,8 @@ RUN apk add -q --update --progress --no-cache \
     && echo vscode ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/vscode \
     && chmod 0440 /etc/sudoers.d/vscode
 
+USER vscode
+
 # Default values, override with a dotfile repository (https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories)
 ENV TZ= \
     LANG=en_US.UTF-8 \
@@ -78,18 +80,18 @@ ENV TZ= \
 RUN wget -O- -nv https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh \
     && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k \
     && rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git* \
-    && mkdir -p /root/.cache/gitstatus \
-    && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C /root/.cache/gitstatus gitstatusd-linux-x86_64
+    && mkdir -p ~/.cache/gitstatus \
+    && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C ~/.cache/gitstatus gitstatusd-linux-x86_64
 
 # Zsh Theme configuration
-COPY .zshrc /root/.zshrc
-COPY .p10k.zsh /root/.p10k.zsh
+COPY .zshrc /home/vscode/.zshrc
+COPY .p10k.zsh /home/vscode/.p10k.zsh
 
 # Docker CLI and docker-compose
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
 COPY --from=docker-compose /usr/local/bin/docker-compose /usr/bin/docker-compose
 
-COPY welcome.sh /root/welcome.sh
+COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
