@@ -22,7 +22,7 @@ ARG GO_VERSION=1.16.4
 RUN    wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
-COPY scripts/install-tool.sh /usr/local/bin/uptool
+COPY scripts/install-tool.sh /usr/local/bin/up
 
 RUN    groupadd -g 1000 -r vscode \
     && useradd -r -u 1000 -g vscode -s /bin/zsh vscode \
@@ -37,11 +37,11 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    uptool golangci-lint 1.40.0 \
-    && uptool venom      1.0.0-rc.4 \
-    && uptool neon       1.5.3 \
-    && uptool goreleaser 0.164.0 \
-    && uptool svu        1.3.2 \
+RUN    up golangci-lint 1.40.0 \
+    && up venom      1.0.0-rc.4 \
+    && up neon       1.5.3 \
+    && up goreleaser 0.164.0 \
+    && up svu        1.3.2 \
     && go clean -cache -testcache
 
 ####################################################################################
@@ -98,10 +98,10 @@ COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
-COPY scripts/update-go-debian.sh /usr/local/bin/goup
-COPY scripts/update-docker.sh /usr/local/bin/dockerup
-COPY scripts/update-docker-compose-debian.sh /usr/local/bin/dockercup
-COPY scripts/update-git-debian.sh /usr/local/bin/gitup
+COPY scripts/update-go-debian.sh /usr/local/bin/up-go
+COPY scripts/update-docker.sh /usr/local/bin/up-docker
+COPY scripts/update-docker-compose-debian.sh /usr/local/bin/up-docker-compose
+COPY scripts/update-git-debian.sh /usr/local/bin/up-git
 
 ENTRYPOINT [ "/bin/zsh" ]
 
@@ -113,17 +113,17 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-debian-slim AS go-devcontainer-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    uptool gopls         0.6.11 \
-    && uptool delve         1.6.0 \
-    && uptool gopkgs        2.1.2 \
-    && uptool go-outline \
-    && uptool goplay        1.0.0 \
-    && uptool gomodifytags  1.13.0 \
-    && uptool impl \
-    && uptool gotests       1.6.0 \
+RUN    up gopls         0.6.11 \
+    && up delve         1.6.0 \
+    && up gopkgs        2.1.2 \
+    && up go-outline \
+    && up goplay        1.0.0 \
+    && up gomodifytags  1.13.0 \
+    && up impl \
+    && up gotests       1.6.0 \
     && go clean -cache -testcache
 
 # Optionnal tools
-RUN    uptool changie    0.5.0 \
-    && uptool cli        1.9.2 \
+RUN    up changie    0.5.0 \
+    && up cli        1.9.2 \
     && go clean -cache -testcache

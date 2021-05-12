@@ -49,13 +49,13 @@ RUN apk add -q --update --progress --no-cache jq bash curl figlet
 COPY welcome.sh /root/welcome.sh
 COPY scripts/cache-command.sh /usr/local/bin/cache
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
-COPY scripts/install-tool.sh /usr/local/bin/instool
+COPY scripts/install-tool.sh /usr/local/bin/up
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
-COPY scripts/update-go.sh /usr/local/bin/goup
-COPY scripts/update-docker.sh /usr/local/bin/dockerup
-COPY scripts/update-docker-compose.sh /usr/local/bin/dockercup
-COPY scripts/update-git.sh /usr/local/bin/gitup
+COPY scripts/update-go.sh /usr/local/bin/up-go
+COPY scripts/update-docker.sh /usr/local/bin/up-docker
+COPY scripts/update-docker-compose.sh /usr/local/bin/up-docker-compose
+COPY scripts/update-git.sh /usr/local/bin/up-git
 
 RUN addgroup -g 1000 -S vscode \
     && adduser -S -s /bin/zsh -G vscode -D -u 1000 vscode \
@@ -74,15 +74,15 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     GO111MODULE=on
 
 # Install required development tools
-RUN    instool gopls         0.6.11 \
-    && instool delve         1.6.0 \
-    && instool gopkgs        2.1.2 \
-    && instool go-outline \
-    && instool goplay        1.0.0 \
-    && instool gomodifytags  1.13.0 \
-    && instool impl \
-    && instool gotests       1.6.0 \
-    && instool golangci-lint 1.40.0 \
+RUN    up gopls         0.6.11 \
+    && up delve         1.6.0 \
+    && up gopkgs        2.1.2 \
+    && up go-outline \
+    && up goplay        1.0.0 \
+    && up gomodifytags  1.13.0 \
+    && up impl \
+    && up gotests       1.6.0 \
+    && up golangci-lint 1.40.0 \
     && go clean -cache -testcache
 
 ENTRYPOINT [ "/bin/zsh" ]
@@ -90,10 +90,10 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-light AS go-devcontainer
 
 # Install all optional development tools
-RUN    instool venom      1.0.0-rc.4 \
-    && instool changie    0.5.0 \
-    && instool cli        1.9.2 \
-    && instool neon       1.5.3 \
-    && instool goreleaser 0.164.0 \
-    && instool svu        1.3.2 \
+RUN    up venom      1.0.0-rc.4 \
+    && up changie    0.5.0 \
+    && up cli        1.9.2 \
+    && up neon       1.5.3 \
+    && up goreleaser 0.164.0 \
+    && up svu        1.3.2 \
     && go clean -cache -testcache
