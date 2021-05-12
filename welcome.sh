@@ -74,9 +74,13 @@ figlet -c Go Devcontainer
 
 (
   source /etc/os-release
-  printf "%-14s %15s " "${NAME}" "v${VERSION_ID}"
-  LATEST_ALPINE_VERSION=$(dlast alpine)
-  [[ "${LATEST_ALPINE_VERSION}" == "${VERSION_ID}" ]] && echo "✅" || echo "🆕 new alpine version available v${LATEST_ALPINE_VERSION}"
+  printf "%-16s %13s " "${NAME}" "v${VERSION_ID}"
+  if [[ "${NAME}" == "Debian GNU/Linux" ]]; then
+    echo "✅"
+  else
+    LATEST_ALPINE_VERSION=$(dlast alpine)
+    [[ "${LATEST_ALPINE_VERSION}" == "${VERSION_ID}" ]] && echo "✅" || echo "🆕 new alpine version available v${LATEST_ALPINE_VERSION}"
+  fi
 )
 
 DOCKER_CLI_VERSION=$(docker version -f '{{.Client.Version}}' 2>/dev/null || :)
