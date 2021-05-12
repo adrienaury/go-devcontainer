@@ -24,12 +24,12 @@ case $1 in
 
   "golangci-lint")
     GOLANGCI_LINT_VERSION="$2"
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@v${GOLANGCI_LINT_VERSION}
+    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
     ;;
 
   "goreleaser")
     GORELEASER_VERSION="$2"
-    go install github.com/goreleaser/goreleaser@v${GORELEASER_VERSION}
+    wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b ${GOBIN} v${GORELEASER_VERSION}
     ;;
 
   "svu")
@@ -55,7 +55,8 @@ case $1 in
 
   "changie")
     CHANGIE_VERSION="$2"
-    go install github.com/miniscruff/changie@v${CHANGIE_VERSION}
+    wget -O- -nv https://github.com/miniscruff/changie/releases/download/v${CHANGIE_VERSION}/changie_${CHANGIE_VERSION}_linux_amd64.tar.gz | tar -xzO changie > ${GOBIN}/changie
+    chmod +x ${GOBIN}/changie
     ;;
 
   "gopkgs")

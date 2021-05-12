@@ -73,7 +73,7 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     GO111MODULE=on
 
 # Install required development tools
-RUN    instool gopls         0.6.10 \
+RUN    instool gopls         0.6.11 \
     && instool delve         1.6.0 \
     && instool gopkgs        2.1.2 \
     && instool go-outline \
@@ -81,7 +81,8 @@ RUN    instool gopls         0.6.10 \
     && instool gomodifytags  1.13.0 \
     && instool impl \
     && instool gotests       1.6.0 \
-    && instool golangci-lint 1.40.0
+    && instool golangci-lint 1.40.0 \
+    && go clean -cache -testcache
 
 ENTRYPOINT [ "/bin/zsh" ]
 
@@ -89,8 +90,9 @@ FROM go-devcontainer-slim AS go-devcontainer
 
 # Install all optional development tools
 RUN    instool venom      1.0.0-rc.4 \
-    && instool changie    0.4.1 \
+    && instool changie    0.5.0 \
     && instool cli        1.9.2 \
     && instool neon       1.5.3 \
     && instool goreleaser 0.164.0 \
-    && instool svu        1.3.2
+    && instool svu        1.3.2 \
+    && go clean -cache -testcache
