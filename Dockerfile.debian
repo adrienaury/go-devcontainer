@@ -98,10 +98,10 @@ COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
-COPY scripts/update-go.sh /usr/local/bin/goup
+COPY scripts/update-go-debian.sh /usr/local/bin/goup
 COPY scripts/update-docker.sh /usr/local/bin/dockerup
-COPY scripts/update-docker-compose.sh /usr/local/bin/dockercup
-COPY scripts/update-git.sh /usr/local/bin/gitup
+COPY scripts/update-docker-compose-debian.sh /usr/local/bin/dockercup
+COPY scripts/update-git-debian.sh /usr/local/bin/gitup
 
 ENTRYPOINT [ "/bin/zsh" ]
 
