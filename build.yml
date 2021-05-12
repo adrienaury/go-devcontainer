@@ -1,5 +1,5 @@
-default: 'help'
-expose: ['help','info','promote','build','release','publish']
+default: "help"
+expose: ["help", "info", "promote", "build", "release", "publish"]
 configuration: ~/.dockerhub.yml
 # ~/.dockerhub.yml should contains:
 # DOCKERHUB_USER: <your dockerhub user>
@@ -9,131 +9,164 @@ properties:
   latest: false
 
 targets:
-  
   help:
-    doc: 'print this message'
+    doc: "print this message"
     steps:
-    # - $: 'neon -info' => incorrect order, issue to open
-    - color: 'cyan'
-      print: 'Available targets'
-    - print: ''
-    - print: 'help     print this message'
-    - print: 'info     print build informations'
-    - print: 'promote  promote the project with a new tag based on git log history'
-    - print: 'build    build docker images locally [will trigger: info]'
-    - print: 'release  build docker images locally with tagged versions [will trigger: info->build]'
-    - print: 'publish  publish docker images to Dockerhub [will trigger: info->build->release]'
-    - print: ''
-    - print: 'Example : neon -props "{latest: true}" promote publish'
-  
+      # - $: 'neon -info' => incorrect order, issue to open
+      - color: "cyan"
+        print: "Available targets"
+      - print: ""
+      - print: "help     print this message"
+      - print: "info     print build informations"
+      - print: "promote  promote the project with a new tag based on git log history"
+      - print: "build    build docker images locally [will trigger: info]"
+      - print: "release  build docker images locally with tagged versions [will trigger: info->build]"
+      - print: "publish  publish docker images to Dockerhub [will trigger: info->build->release]"
+      - print: ""
+      - print: 'Example : neon -props "{latest: true}" promote publish'
+
   info:
-    doc: 'print build informations'
+    doc: "print build informations"
     steps:
-    - $: 'git describe --tags --exact-match 2>/dev/null || git symbolic-ref -q --short HEAD'
-      1=: 'tag'
-      3x: true
-    - $: 'echo -n "={tag}" | sed -e s/^v//'
-      1=: 'version'
-      3x: true
-    - $: 'git rev-parse HEAD 2>/dev/null'
-      1=: 'commit'
-      3x: true
-    - 'date = now()'
-    - $: 'git config user.email'
-      1=: 'by'
-      3x: true
-    - $: 'if expr match "={version}" "\d\+\.\d\+\.\d\+" 1>/dev/null 2>&1; then echo -n "yes"; else echo -n "no"; fi'
-      1=: 'is_release'
-      3x: true
-    - $: 'cut -f1 -d.'
-      <: '=version'
-      1=: 'version_major'
-      3x: true
-    - $: 'cut -f2 -d.'
-      <: '=version'
-      1=: 'version_minor'
-      3x: true
-    - $: 'cut -f3 -d.'
-      <: '=version'
-      1=: 'version_patch'
-      3x: true
-    - print: |-
-        TAG     = ={tag}
-        COMMIT  = ={commit}
-        DATE    = ={date}
-        BY      = ={by}
-        RELEASE = ={is_release}
-    - if: 'is_release == "yes"'
-      then:
+      - $: "git describe --tags --exact-match 2>/dev/null || git symbolic-ref -q --short HEAD"
+        1=: "tag"
+        3x: true
+      - $: 'echo -n "={tag}" | sed -e s/^v//'
+        1=: "version"
+        3x: true
+      - $: "git rev-parse HEAD 2>/dev/null"
+        1=: "commit"
+        3x: true
+      - "date = now()"
+      - $: "git config user.email"
+        1=: "by"
+        3x: true
+      - $: 'if expr match "={version}" "\d\+\.\d\+\.\d\+" 1>/dev/null 2>&1; then echo -n "yes"; else echo -n "no"; fi'
+        1=: "is_release"
+        3x: true
+      - $: "cut -f1 -d."
+        <: "=version"
+        1=: "version_major"
+        3x: true
+      - $: "cut -f2 -d."
+        <: "=version"
+        1=: "version_minor"
+        3x: true
+      - $: "cut -f3 -d."
+        <: "=version"
+        1=: "version_patch"
+        3x: true
       - print: |-
-          VERSION = ={version_major}.={version_minor}.={version_patch}
-  
+          TAG     = ={tag}
+          COMMIT  = ={commit}
+          DATE    = ={date}
+          BY      = ={by}
+          RELEASE = ={is_release}
+      - if: 'is_release == "yes"'
+        then:
+          - print: |-
+              VERSION = ={version_major}.={version_minor}.={version_patch}
+
   promote:
-    doc: 'promote the project with a new tag based on git log history'
+    doc: "promote the project with a new tag based on git log history"
     steps:
-    - $: 'git tag $(svu next || echo -n v0.1.0)'
-      2x: true
-    - $: 'echo Promoted to $(svu current)'
-  
+      - $: "git tag $(svu next || echo -n v0.1.0)"
+        2x: true
+      - $: "echo Promoted to $(svu current)"
+
+  # run "neon -props '{latest: true}' build" to include latest tag
   build:
-    doc: 'build docker images locally'
-    unless: 'newer("build/last", find(".", "Dockerfile", "**/*.sh", ".zshrc", ".p10k.zsh"))'
-    depends: 'info'
+    doc: "build docker images locally"
+    unless: 'newer(find(".", "build/last-*"), find(".", "Dockerfile*", "**/*.sh", ".zshrc", ".p10k.zsh"))'
+    depends: "info"
     steps:
-    - print: 'Executing build target'
-      color: cyan
-    - mkdir: 'build'
-  # - $: 'sudo docker build -q -t adrienaury/go-devcontainer:={tag}-light --target go-devcontainer-light .'
-    - $: 'sudo docker build -q --iidfile build/last -t adrienaury/go-devcontainer:={tag} --target go-devcontainer .'
-  
+      - print: "Executing build target"
+        color: cyan
+      - mkdir: "build"
+      - $: "sudo docker build -f Dockerfile.alpine -q --iidfile build/last-alpine-ci -t adrienaury/go-devcontainer-ci:alpine --target go-devcontainer-ci-alpine ."
+      - $: "sudo docker build -f Dockerfile.alpine -q --iidfile build/last-alpine-slim -t adrienaury/go-devcontainer-slim:alpine --target go-devcontainer-slim-alpine ."
+      - $: "sudo docker build -f Dockerfile.alpine -q --iidfile build/last-alpine-full -t adrienaury/go-devcontainer:alpine --target go-devcontainer-full-alpine ."
+      - $: "sudo docker build -f Dockerfile.debian -q --iidfile build/last-debian-ci -t adrienaury/go-devcontainer-ci:debian --target go-devcontainer-ci-debian ."
+      - $: "sudo docker build -f Dockerfile.debian -q --iidfile build/last-debian-slim -t adrienaury/go-devcontainer-slim:debian --target go-devcontainer-slim-debian ."
+      - $: "sudo docker build -f Dockerfile.debian -q --iidfile build/last-debian-full -t adrienaury/go-devcontainer:debian --target go-devcontainer-full-debian ."
+      - if: "latest"
+        then:
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:alpine adrienaury/go-devcontainer-ci:latest"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:alpine adrienaury/go-devcontainer-slim:latest"
+          - $: "sudo docker tag adrienaury/go-devcontainer:alpine adrienaury/go-devcontainer:latest"
+
   # run "neon -props '{latest: true}' release" to include latest tag
   release:
-    doc: 'build docker images locally with tagged versions'
+    doc: "build docker images locally with tagged versions"
     # unless: 'is_release != "yes"' => is_release unknown variable, issue to open
-    depends: ['info','build']
+    depends: ["info", "build"]
     steps:
-    - if: 'is_release == "yes"'
-      then:
-    # - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:v={version_major}-light'
-    # - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:v={version_major}.={version_minor}-light'
-    # - if: 'latest'
-    #   then:
-    #   - $: 'sudo docker tag adrienaury/go-devcontainer:={tag}-light adrienaury/go-devcontainer:latest-light'
-      - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}'
-      - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:v={version_major}.={version_minor}'
-      - if: 'latest'
+      - if: 'is_release == "yes"'
         then:
-        - $: 'sudo docker tag adrienaury/go-devcontainer:={tag} adrienaury/go-devcontainer:latest'
-      - $: 'sudo docker images --no-trunc | grep $(cat build/last)'
-      else:
-      - print: 'Skipping release target (not a release)'
-        color: red
-  
+          - $: "sudo docker tag adrienaury/go-devcontainer:alpine adrienaury/go-devcontainer:v={version_major}"
+          - $: "sudo docker tag adrienaury/go-devcontainer:alpine adrienaury/go-devcontainer:v={version_major}.={version_minor}"
+          - $: "sudo docker tag adrienaury/go-devcontainer:alpine adrienaury/go-devcontainer:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-alpine-full)"
+          - $: "sudo docker tag adrienaury/go-devcontainer:debian adrienaury/go-devcontainer:v={version_major}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer:debian adrienaury/go-devcontainer:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer:debian adrienaury/go-devcontainer:v={version_major}.={version_minor}.={version_patch}-debian"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-debian-full)"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:alpine adrienaury/go-devcontainer-slim:v={version_major}"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:alpine adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:alpine adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-alpine-slim)"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:debian adrienaury/go-devcontainer-slim:v={version_major}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:debian adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer-slim:debian adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}.={version_patch}-debian"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-debian-slim)"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:alpine adrienaury/go-devcontainer-ci:v={version_major}"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:alpine adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:alpine adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-alpine-ci)"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:debian adrienaury/go-devcontainer-ci:v={version_major}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:debian adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker tag adrienaury/go-devcontainer-ci:debian adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}.={version_patch}-debian"
+          - $: "sudo docker images --no-trunc | grep $(cat build/last-debian-ci)"
+        else:
+          - print: "Skipping release target (not a release)"
+            color: red
+
   docker-login:
     steps:
-    - $: 'sudo docker login -u ={DOCKERHUB_USER} -p ={DOCKERHUB_PASS}'
-      2x: true
-  
+      - $: "sudo docker login -u ={DOCKERHUB_USER} -p ={DOCKERHUB_PASS}"
+        2x: true
+
   # run "neon -props '{latest: true}' publish" to include latest tag
   publish:
-    doc: 'push docker images to Dockerhub'
+    doc: "push docker images to Dockerhub"
     # unless: 'is_release != "yes"' => is_release unknown variable, issue to open
-    depends: ['info','release','docker-login']
+    depends: ["info", "release", "docker-login"]
     steps:
-    - if: 'is_release == "yes"'
-      then:
-    # - $: 'sudo docker push adrienaury/go-devcontainer:={tag}-light'
-    # - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}-light'
-    # - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}-light'
-    # - if: 'latest'
-    #   then:
-    #   - $: 'sudo docker push adrienaury/go-devcontainer:latest-light'
-      - $: 'sudo docker push adrienaury/go-devcontainer:={tag}'
-      - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}'
-      - $: 'sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}'
-      - if: 'latest'
+      - if: 'is_release == "yes"'
         then:
-        - $: 'sudo docker push adrienaury/go-devcontainer:latest'
-      else:
-      - print: 'Skipping release target (not a release)'
-        color: red
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}"
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}"
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer:v={version_major}.={version_minor}.={version_patch}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-slim:v={version_major}.={version_minor}.={version_patch}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}.={version_patch}"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}-debian"
+          - $: "sudo docker push adrienaury/go-devcontainer-ci:v={version_major}.={version_minor}.={version_patch}-debian"
+          - if: "latest"
+            then:
+              - $: "sudo docker push adrienaury/go-devcontainer-ci:latest"
+              - $: "sudo docker push adrienaury/go-devcontainer-slim:latest"
+              - $: "sudo docker push adrienaury/go-devcontainer:latest"
+        else:
+          - print: "Skipping release target (not a release)"
+            color: red

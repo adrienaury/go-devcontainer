@@ -47,7 +47,7 @@ eval set -- "$PARSED"
 REPOSITORY=library
 ARCH=amd64
 OS=linux
-FILTER='^\d\+\(\.\d\+\)\+$'
+FILTER='^[0-9]\+\(\.[0-9]\+\)\+$'
 MAX_PAGES=1
 CACHE=3600
 

@@ -55,12 +55,12 @@ Then use `F1` key or `Ctrl+Shift+P` and use the `Remote-Containers: Rebuild and 
 When starting a new terminal inside the container, a message will tell you if new versions are available. It will also print the command to use in order to update the tool.
 
 ```text
-     ____         ____                            _        _                 
-    / ___| ___   |  _ \  _____   _____ ___  _ __ | |_ __ _(_)_ __   ___ _ __ 
+     ____         ____                            _        _
+    / ___| ___   |  _ \  _____   _____ ___  _ __ | |_ __ _(_)_ __   ___ _ __
    | |  _ / _ \  | | | |/ _ \ \ / / __/ _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
-   | |_| | (_) | | |_| |  __/\ V / (_| (_) | | | | || (_| | | | | |  __/ |   
-    \____|\___/  |____/ \___| \_/ \___\___/|_| |_|\__\__,_|_|_| |_|\___|_|   
-                                                                             
+   | |_| | (_) | | |_| |  __/\ V / (_| (_) | | | | || (_| | | | | |  __/ |
+    \____|\___/  |____/ \___| \_/ \___\___/|_| |_|\__\__,_|_|_| |_|\___|_|
+
 Alpine Linux           v3.13.5 ✅
 ├── Docker Client     v20.10.6 ✅
 ├── Docker Compose     v1.29.1 ✅
@@ -69,7 +69,7 @@ Alpine Linux           v3.13.5 ✅
 ├── Go                 v1.16.3 ✅
 
 Development tools
-├── Gopls                0.6.9 🆕 run 'sudo instool gopls 0.6.10' to update to latest version
+├── Gopls                0.6.9 🆕 run 'up gopls 0.6.10' to update to latest version
 ├── Delve                1.6.0 ✅
 ├── Gopkgs               2.1.2 ✅
 ├── Goplay               1.0.0 ✅
@@ -87,7 +87,7 @@ Development tools
 Just type the command in a terminal to update.
 
 ```console
-sudo instool gopls 0.6.10
+up gopls 0.6.10
 ```
 
 ## Contributing

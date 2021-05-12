@@ -1,0 +1,128 @@
+ARG DEBIAN_VERSION=buster
+ARG DOCKER_VERSION=20.10.6
+
+FROM docker:${DOCKER_VERSION} AS docker
+
+####################################################################################
+## go-devcontainer-ci-debian stage                                                ##
+##   contains minimal setup to run on a CI platform                               ##
+####################################################################################
+
+FROM bitnami/minideb:${DEBIAN_VERSION} AS go-devcontainer-ci-debian
+
+RUN install_packages \
+    ca-certificates \
+    wget curl \
+    bash zsh \
+    git
+
+# Go
+ARG GO_VERSION=1.16.4
+RUN    wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
+
+COPY scripts/cache-command.sh /usr/local/bin/cache
+COPY scripts/install-tool.sh /usr/local/bin/up
+
+RUN    groupadd -g 1000 -r vscode \
+    && useradd -r -u 1000 -g vscode -s /bin/zsh vscode \
+    && cp -r /root/. /home/vscode \
+    && chown -R vscode:vscode /home/vscode
+
+USER vscode
+
+ENV GOPATH="/home/vscode/go"
+ENV GOBIN="${GOPATH}/bin"
+ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
+    CGO_ENABLED=0 \
+    GO111MODULE=on
+
+RUN    up golangci-lint 1.40.0 \
+    && up venom         1.0.0-rc.4 \
+    && up neon          1.5.3 \
+    && up goreleaser    0.164.0 \
+    && up svu           1.3.2 \
+    && go clean -cache -testcache
+
+####################################################################################
+## go-devcontainer-slim-debian stage                                              ##
+##   contains a slim setup for development usage                                  ##
+####################################################################################
+
+FROM go-devcontainer-ci-debian AS go-devcontainer-slim-debian
+
+USER root
+
+RUN install_packages \
+    locales tzdata \
+    sudo \
+    figlet \
+    jq \
+    # Generate default locale
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && locale-gen \
+    # Promote user as sudoer
+    && echo vscode ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode
+
+USER vscode
+
+# Default values, override with a dotfile repository (https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories)
+ENV TZ= \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    TERM=xterm
+
+# Zsh Theme
+RUN wget -O- -nv https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh \
+    && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k \
+    && rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git* \
+    && mkdir -p ~/.cache/gitstatus \
+    && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C ~/.cache/gitstatus gitstatusd-linux-x86_64
+
+# Zsh Theme configuration
+COPY .zshrc /home/vscode/.zshrc
+COPY .p10k.zsh /home/vscode/.p10k.zsh
+
+# Docker CLI
+COPY --chown=root:root --from=docker /usr/local/bin/docker /usr/bin/docker
+RUN sudo chmod +x /usr/bin/docker
+
+# Docker-compose
+ARG DOCKER_COMPOSE_VERSION=1.29.2
+ADD --chown=root:root https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64 /usr/bin/docker-compose
+RUN sudo chmod +x /usr/bin/docker-compose
+
+COPY welcome.sh /home/vscode/welcome.sh
+COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
+COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
+COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
+COPY scripts/update-go-debian.sh /usr/local/bin/up-go
+COPY scripts/update-docker.sh /usr/local/bin/up-docker
+COPY scripts/update-docker-compose-debian.sh /usr/local/bin/up-docker-compose
+COPY scripts/update-git-debian.sh /usr/local/bin/up-git
+
+ENTRYPOINT [ "/bin/zsh" ]
+
+####################################################################################
+## go-devcontainer-full-debian stage                                              ##
+##   contains a full setup for development usage                                  ##
+####################################################################################
+
+FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
+
+# These tools are usually installed by VSCode golang extension
+RUN    up gopls         0.6.11 \
+    && up delve         1.6.0 \
+    && up gopkgs        2.1.2 \
+    && up go-outline \
+    && up goplay        1.0.0 \
+    && up gomodifytags  1.13.0 \
+    && up impl \
+    && up gotests       1.6.0 \
+    && go clean -cache -testcache
+
+# Optionnal tools
+RUN    up changie    0.5.0 \
+    && up cli        1.9.2 \
+    && go clean -cache -testcache
