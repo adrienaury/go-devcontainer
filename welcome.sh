@@ -84,7 +84,7 @@ DOCKER_CLI_VERSION_LATEST=$(dlast docker)
 printf "├── %-15s %10s " "Docker Client" "v${DOCKER_CLI_VERSION}"
 [[ "${DOCKER_CLI_VERSION_LATEST}" == "${DOCKER_CLI_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_CLI_VERSION_LATEST}, run 'sudo dockerup' to update"
 
-DOCKER_COMPOSE_VERSION=$(docker-compose --version 2>/dev/null | cut -d' ' -f3 | tr -d ',' || :)
+DOCKER_COMPOSE_VERSION=$(sudo docker-compose --version 2>/dev/null | cut -d' ' -f3 | tr -d ',' || :)
 DOCKER_COMPOSE_VERSION_LATEST=$(dlast -r docker compose)
 printf "├── %-15s %10s " "Docker Compose" "v${DOCKER_COMPOSE_VERSION}"
 [[ "${DOCKER_COMPOSE_VERSION_LATEST}" == "${DOCKER_COMPOSE_VERSION}" ]] && echo "✅" || echo "🆕 new version available v${DOCKER_COMPOSE_VERSION_LATEST}, run 'sudo dockercup' to update"
