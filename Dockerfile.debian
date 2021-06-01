@@ -36,11 +36,11 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.40.0 \
+RUN    up golangci-lint 1.40.1 \
     && up venom         1.0.0-rc.4 \
     && up neon          1.5.3 \
-    && up goreleaser    0.164.0 \
-    && up svu           1.3.2 \
+    && up goreleaser    0.168.0 \
+    && up svu           1.4.1 \
     && go clean -cache -testcache
 
 ####################################################################################
@@ -113,7 +113,7 @@ FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
 RUN    up gopls         0.6.11 \
-    && up delve         1.6.0 \
+    && up delve         1.6.1 \
     && up gopkgs        2.1.2 \
     && up go-outline \
     && up goplay        1.0.0 \
@@ -124,5 +124,5 @@ RUN    up gopls         0.6.11 \
 
 # Optionnal tools
 RUN    up changie    0.5.0 \
-    && up cli        1.9.2 \
+    && up cli        1.10.3 \
     && go clean -cache -testcache
