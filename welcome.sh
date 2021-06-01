@@ -108,23 +108,25 @@ printf "├── %-15s %10s " "Go" "v${GO_VERSION#go}"
 LATEST_GO_VERSION=$(dlast golang)
 [[ "${LATEST_GO_VERSION}" == "${GO_VERSION#go}" ]] && echo "✅" || echo "🆕 new golang version available v${LATEST_GO_VERSION}, run 'sudo up-go' to update"
 
-echo
-echo "Development tools"
-# VSCode Go Extension requirements (https://github.com/golang/vscode-go/blob/master/docs/tools.md)
-print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
-print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
-print_version "Gopkgs" "uudashr" "gopkgs" "$(get_gopkgs_version)"
-print_version "Goplay" "haya14busa" "goplay" "$(get_goplay_version)"
-print_version "Gomodifytags" "fatih" "gomodifytags" "$(get_gomodifytags_version)"
-print_version "Gotests" "cweill" "gotests" "$(get_gotests_version)"
+if [ "${1-x}" == "--check-all-versions" ]; then
+    echo
+    echo "Development tools"
+    # VSCode Go Extension requirements (https://github.com/golang/vscode-go/blob/master/docs/tools.md)
+    print_version "Gopls" "golang" "tools" "$(get_gopls_version)" "gopls"
+    print_version "Delve" "go-delve" "delve" "$(get_delve_version)"
+    print_version "Gopkgs" "uudashr" "gopkgs" "$(get_gopkgs_version)"
+    print_version "Goplay" "haya14busa" "goplay" "$(get_goplay_version)"
+    print_version "Gomodifytags" "fatih" "gomodifytags" "$(get_gomodifytags_version)"
+    print_version "Gotests" "cweill" "gotests" "$(get_gotests_version)"
 
-echo
-echo "CI tools"
-print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
-print_version "Venom" "ovh" "venom" "$(get_venom_version)"
-print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
-print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
-print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
-print_version "Changie" "miniscruff" "changie" "$(get_changie_version)"
-print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
+    echo
+    echo "CI tools"
+    print_version "GolangCI Lint" "golangci" "golangci-lint" "$(get_golangci_lint_version)"
+    print_version "Venom" "ovh" "venom" "$(get_venom_version)"
+    print_version "Neon" "c4s4" "neon" "$(get_neon_version)"
+    print_version "GoReleaser" "goreleaser" "goreleaser" "$(get_goreleaser_version)"
+    print_version "SVU" "caarlos0" "svu" "$(get_svu_version)"
+    print_version "Changie" "miniscruff" "changie" "$(get_changie_version)"
+    print_version "Github CLI" "cli" "cli" "$(get_githubcli_version)"
+fi
 echo
