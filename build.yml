@@ -41,7 +41,7 @@ targets:
       - $: "git config user.email"
         1=: "by"
         3x: true
-      - $: 'if expr match "={version}" "\d\+\.\d\+\.\d\+" 1>/dev/null 2>&1; then echo -n "yes"; else echo -n "no"; fi'
+      - $: 'if expr match "={version}" "v\?[0-9]\+\.[0-9]\+\.[0-9]\+" 1>/dev/null 2>&1; then echo -n "yes"; else echo -n "no"; fi'
         1=: "is_release"
         3x: true
       - $: "cut -f1 -d."
