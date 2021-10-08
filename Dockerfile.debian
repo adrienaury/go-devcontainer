@@ -1,5 +1,5 @@
 ARG DEBIAN_VERSION=buster
-ARG DOCKER_VERSION=20.10.8
+ARG DOCKER_VERSION=20.10.9
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -17,7 +17,7 @@ RUN install_packages \
     git
 
 # Go
-ARG GO_VERSION=1.17.1
+ARG GO_VERSION=1.17.2
 RUN    wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
@@ -39,7 +39,7 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
 RUN    up golangci-lint 1.42.1 \
     && up venom         1.0.0-rc.7 \
     && up neon          1.5.3 \
-    && up goreleaser    0.179.0 \
+    && up goreleaser    0.181.1 \
     && up svu           1.7.0 \
     && go clean -cache -testcache
 
