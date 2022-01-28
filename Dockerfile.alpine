@@ -41,7 +41,7 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     GO111MODULE=on
 
 RUN    up golangci-lint 1.44.0 \
-    && up venom         1.0.0-rc.7 \
+    && up venom         1.0.1 \
     && up neon          1.5.3 \
     && up goreleaser    0.181.1 \
     && up svu           1.7.0 \
