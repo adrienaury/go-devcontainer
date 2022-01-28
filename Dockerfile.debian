@@ -1,5 +1,5 @@
-ARG DEBIAN_VERSION=buster
-ARG DOCKER_VERSION=20.10.9
+ARG DEBIAN_VERSION=bullseye
+ARG DOCKER_VERSION=20.10.12
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -17,7 +17,7 @@ RUN install_packages \
     git
 
 # Go
-ARG GO_VERSION=1.17.2
+ARG GO_VERSION=1.17.6
 RUN    wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
