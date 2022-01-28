@@ -111,7 +111,7 @@ FROM go-devcontainer-slim-alpine AS go-devcontainer-full-alpine
 
 # These tools are usually installed by VSCode golang extension
 RUN    up gopls         0.7.5 \
-    && up delve         1.7.2 \
+    && up delve         1.8.0 \
     && up gopkgs        2.1.2 \
     && up go-outline \
     && up goplay        1.0.0 \
