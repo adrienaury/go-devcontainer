@@ -29,12 +29,12 @@ case $1 in
 
   "goreleaser")
     GORELEASER_VERSION="$2"
-    wget -O- -nv https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh -s -- -b ${GOBIN} v${GORELEASER_VERSION}
+    go install github.com/goreleaser/goreleaser@v${GORELEASER_VERSION}
     ;;
 
   "svu")
     SVU_VERSION="$2"
-    wget -O- -nv https://install.goreleaser.com/github.com/caarlos0/svu.sh | sh -s -- -b  ${GOBIN} v${SVU_VERSION}
+    go install github.com/caarlos0/svu@v${SVU_VERSION}
     ;;
 
   "venom")
