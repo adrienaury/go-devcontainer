@@ -44,7 +44,7 @@ RUN    up golangci-lint 1.44.0 \
     && up venom         1.0.1 \
     && up neon          1.5.3 \
     && up goreleaser    1.4.1 \
-    && up svu           1.7.0 \
+    && up svu           1.9.0 \
     && go clean -cache -testcache
 
 ####################################################################################
