@@ -122,5 +122,5 @@ RUN    up gopls         0.7.5 \
 
 # Optionnal tools
 RUN    up changie    1.3.0 \
-    && up cli        2.0.0 \
+    && up cli        2.4.0 \
     && go clean -cache -testcache
