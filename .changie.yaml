@@ -4,12 +4,12 @@ headerPath: header.tpl.md
 changelogPath: CHANGELOG.md
 versionExt: md
 versionFormat: '## {{.Version}} - {{.Time.Format "2006-01-02"}}'
-kindFormat: ''
-changeFormat: '- `{{.Kind}}` {{.Body}}'
+kindFormat: ""
+changeFormat: "- `{{.Kind}}` {{.Body}}"
 kinds:
-- Added
-- Changed
-- Deprecated
-- Removed
-- Fixed
-- Security
+  - label: Added
+  - label: Changed
+  - label: Deprecated
+  - label: Removed
+  - label: Fixed
+  - label: Security
