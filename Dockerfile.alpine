@@ -40,7 +40,7 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.44.0 \
+RUN    up golangci-lint 1.45.2 \
     && up venom         1.0.1 \
     && up neon          1.5.3 \
     && up goreleaser    1.4.1 \
