@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+
+  ci:
+    build:
+      dockerfile: Dockerfile.debian
+    user: root
+    volumes:
+      - ./:/workspace
+      - ~/.ssh:/home/vscode/.ssh:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    security_opt:
+      - seccomp:unconfined
+    entrypoint: tail -f /dev/null
