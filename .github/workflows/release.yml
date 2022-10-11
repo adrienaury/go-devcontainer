@@ -34,9 +34,10 @@ jobs:
       - uses: FranzDiebold/github-env-vars-action@v2
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          docker-compose exec -e GITHUB_TOKEN=${GITHUB_TOKEN} -T -u root ci bash -c 'echo "GITHUB_TOKEN: ${GITHUB_TOKEN}" > ~/.github.yml'
+          docker-compose exec -T -u root ci bash -c 'echo "DOCKERHUB_USER: adrienaury" > ~/.dockerhub.yml'
+          docker-compose exec -e DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN} -T -u root ci bash -c 'echo "DOCKERHUB_PASS: ${DOCKERHUB_TOKEN}" >> ~/.dockerhub.yml'
           docker-compose exec \
             -T \
             -u root \
