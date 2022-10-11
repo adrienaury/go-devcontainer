@@ -1,5 +1,5 @@
 ARG DEBIAN_VERSION=bullseye
-ARG DOCKER_VERSION=20.10.12
+ARG DOCKER_VERSION=20.10.18
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -17,7 +17,7 @@ RUN install_packages \
     git
 
 # Go
-ARG GO_VERSION=1.18
+ARG GO_VERSION=1.19.2
 RUN wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
@@ -36,10 +36,10 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.45.2 \
+RUN    up golangci-lint 1.50.0 \
     && up venom         1.0.1 \
-    && up neon          1.5.3 \
-    && up goreleaser    1.4.1 \
+    && up neon          1.5.5 \
+    && up goreleaser    1.11.5 \
     && up svu           1.9.0 \
     && go clean -cache -testcache
 
@@ -112,8 +112,8 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.7.5 \
-    && up delve         1.8.0 \
+RUN    up gopls         0.9.5 \
+    && up delve         1.9.1 \
     && up gopkgs        2.1.2 \
     && up go-outline \
     && up goplay        1.0.0 \
@@ -123,6 +123,6 @@ RUN    up gopls         0.7.5 \
     && go clean -cache -testcache
 
 # Optionnal tools
-RUN    up changie    1.3.0 \
-    && up cli        2.4.0 \
+RUN    up changie    1.9.1 \
+    && up cli        2.17.0 \
     && go clean -cache -testcache
