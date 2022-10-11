@@ -4,6 +4,7 @@ services:
 
   ci:
     build:
+      context: .
       dockerfile: Dockerfile.debian
     user: root
     volumes:
