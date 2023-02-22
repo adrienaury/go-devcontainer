@@ -13,6 +13,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Changed` bump golangci-lint version from 1.50.0 to 1.51.2
 - `Changed` bump venom version from 1.0.1 to 1.1.0
 - `Changed` bump goreleaser version from 1.11.5 to 1.15.2
+- `Changed` bump gopls version from 0.9.5 to 0.11.0
+- `Changed` bump delve version from 1.9.1 to 1.20.1
+- `Changed` bump changie version from 1.9.1 to 1.11.1
+- `Changed` bump github-cli version from 2.17.0 to 2.23.0
 
 ## v1.0.0 - 2022-10-11
 
