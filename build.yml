@@ -68,28 +68,7 @@ targets:
         <: "=version"
         1=: "version_patch"
         3x: true
-      - if: MODULE == ""
-        then:
-          - $: "git config --local remote.origin.url | sed -n 's#^.*//\\(.*\\)\\.git$#\\1#p' | tr '[:upper:]' '[:lower:]'" # .*//(.*)\.git => https://github.com/<user>/<repo>.git => github.com/<user>/<repo>
-            1=: "mod"
-            3x: true
-        else:
-          - $: "echo -n ={MODULE}"
-            1=: "mod"
-            3x: true
-      - if: PROJECT == ""
-        then:
-          - $: "cut -f3 -d/"
-            <: "=mod"
-            1=: "project"
-            3x: true
-        else:
-          - $: "echo -n ={PROJECT}"
-            1=: "project"
-            3x: true
       - print: |-
-          MODULE  = ={mod}
-          PROJECT = ={project}
           TAG     = ={tag}
           COMMIT  = ={commit}
           DATE    = ={date}
