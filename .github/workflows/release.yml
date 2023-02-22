@@ -36,6 +36,7 @@ jobs:
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
+          docker-compose exec -T -u root ci bash -c 'git config --global --add safe.directory /workspace'
           docker-compose exec -T -u root ci bash -c 'echo "DOCKERHUB_USER: adrienaury" > ~/.dockerhub.yml'
           docker-compose exec -e DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN} -T -u root ci bash -c 'echo "DOCKERHUB_PASS: ${DOCKERHUB_TOKEN}" >> ~/.dockerhub.yml'
           docker-compose exec \

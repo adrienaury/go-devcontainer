@@ -36,7 +36,7 @@
 	// "forwardPorts": [],
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	"postCreateCommand": "git config --local core.hooksPath githooks && touch /home/vscode/.dockerhub.yml",
+	"postCreateCommand": "git config --global --add safe.directory /workspace && git config --local core.hooksPath githooks && touch /home/vscode/.dockerhub.yml",
 
 	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
 	"runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
