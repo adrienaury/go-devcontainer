@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v2.0.0 - 2023-02-22
+
+- `Changed` bump golang version from 1.19.2 to 1.20.1
+- `Changed` bump base alpine version from 3.16 to 3.17
+- `Changed` bump docker version from 20.10.18 to 20.10.23
+- `Changed` bump golangci-lint version from 1.50.0 to 1.51.2
+- `Changed` bump venom version from 1.0.1 to 1.1.0
+- `Changed` bump goreleaser version from 1.11.5 to 1.15.2
+
 ## v1.0.0 - 2022-10-11
 
 - `Changed` bump golang version from 1.18.0 to 1.19.2
