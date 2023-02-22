@@ -1,5 +1,5 @@
 ARG DEBIAN_VERSION=bullseye
-ARG DOCKER_VERSION=20.10.18
+ARG DOCKER_VERSION=20.10.23
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -17,7 +17,7 @@ RUN install_packages \
     git
 
 # Go
-ARG GO_VERSION=1.19.2
+ARG GO_VERSION=1.20.1
 RUN wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
@@ -36,10 +36,10 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.50.0 \
-    && up venom         1.0.1 \
+RUN    up golangci-lint 1.51.2 \
+    && up venom         1.1.0 \
     && up neon          1.5.5 \
-    && up goreleaser    1.11.5 \
+    && up goreleaser    1.15.2 \
     && up svu           1.9.0 \
     && go clean -cache -testcache
 

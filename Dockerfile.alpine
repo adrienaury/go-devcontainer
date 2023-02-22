@@ -1,6 +1,6 @@
-ARG ALPINE_VERSION=3.16
-ARG GO_VERSION=1.19.2
-ARG DOCKER_VERSION=20.10.18
+ARG ALPINE_VERSION=3.17
+ARG GO_VERSION=1.20.1
+ARG DOCKER_VERSION=20.10.23
 ARG DOCKER_COMPOSE_VERSION=1.29.2
 
 FROM docker:${DOCKER_VERSION}-alpine${ALPINE_VERSION} AS docker
@@ -40,10 +40,10 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.50.0 \
-    && up venom         1.0.1 \
+RUN    up golangci-lint 1.51.2 \
+    && up venom         1.1.0 \
     && up neon          1.5.5 \
-    && up goreleaser    1.11.5 \
+    && up goreleaser    1.15.2 \
     && up svu           1.9.0 \
     && go clean -cache -testcache
 
