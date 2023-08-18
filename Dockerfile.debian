@@ -87,7 +87,7 @@ COPY .p10k.zsh /home/vscode/.p10k.zsh
 # Docker CLI
 COPY --chown=root:root --from=docker /usr/local/bin/docker /usr/bin/docker
 RUN sudo chmod +x /usr/bin/docker
-RUN install_packages docker-compose-plugin
+RUN sudo install_packages docker-compose-plugin
 
 COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
