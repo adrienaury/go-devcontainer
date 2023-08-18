@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v3.1.0 - 2023-08-18
+
+- `Changed` bump base alpine version from 3.17 to 3.18
+- `Changed` bump base debian version from bullseye to bookworm
+- `Changed` bump docker version from 20.10.23 to 24.0.5
+- `Changed` bump golangci-lint version from 1.51.2 to 1.54.1
+- `Changed` bump neon version from 1.5.5 to 1.6.0
+- `Changed` bump goreleaser version from 1.15.2 to 1.20.0
+- `Changed` bump svu version from 1.9.0 to 1.11.0
+- `Changed` bump gopls version from 0.11.0 to 0.13.2
+- `Changed` bump delve version from 1.20.1 to 1.21.0
+- `Changed` bump changie version from 1.11.1 to 1.12.0
+- `Changed` bump github-cli version from 2.23.0 to 2.32.1
+
 ## v3.0.0 - 2023-08-18
 
 - `Changed` bump golang version from 1.20.2 to 1.21.0

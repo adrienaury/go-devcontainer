@@ -1,5 +1,5 @@
-ARG DEBIAN_VERSION=bullseye
-ARG DOCKER_VERSION=20.10.23
+ARG DEBIAN_VERSION=bookworm
+ARG DOCKER_VERSION=24.0.5
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -36,11 +36,11 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.51.2 \
+RUN    up golangci-lint 1.54.1 \
     && up venom         1.1.0 \
-    && up neon          1.5.5 \
-    && up goreleaser    1.15.2 \
-    && up svu           1.9.0 \
+    && up neon          1.6.0 \
+    && up goreleaser    1.20.0 \
+    && up svu           1.11.0 \
     && go clean -cache -testcache
 
 ####################################################################################
@@ -88,18 +88,12 @@ COPY .p10k.zsh /home/vscode/.p10k.zsh
 COPY --chown=root:root --from=docker /usr/local/bin/docker /usr/bin/docker
 RUN sudo chmod +x /usr/bin/docker
 
-# Docker-compose
-ARG DOCKER_COMPOSE_VERSION=1.29.2
-ADD --chown=root:root https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64 /usr/bin/docker-compose
-RUN sudo chmod +x /usr/bin/docker-compose
-
 COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
 COPY scripts/get-latest-version-docker.sh /usr/local/bin/dlast
 COPY scripts/get-latest-version-github.sh /usr/local/bin/glast
 COPY scripts/update-go-debian.sh /usr/local/bin/up-go
 COPY scripts/update-docker.sh /usr/local/bin/up-docker
-COPY scripts/update-docker-compose-debian.sh /usr/local/bin/up-docker-compose
 COPY scripts/update-git-debian.sh /usr/local/bin/up-git
 
 ENTRYPOINT [ "/bin/zsh" ]
@@ -112,8 +106,8 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.11.0 \
-    && up delve         1.20.1 \
+RUN    up gopls         0.13.2 \
+    && up delve         1.21.0 \
     && up gopkgs        2.1.2 \
     && up go-outline \
     && up goplay        1.0.0 \
@@ -123,6 +117,6 @@ RUN    up gopls         0.11.0 \
     && go clean -cache -testcache
 
 # Optionnal tools
-RUN    up changie    1.11.1 \
-    && up cli        2.23.0 \
+RUN    up changie    1.12.0 \
+    && up cli        2.32.1 \
     && go clean -cache -testcache
