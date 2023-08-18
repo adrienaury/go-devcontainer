@@ -87,7 +87,7 @@ COPY .p10k.zsh /home/vscode/.p10k.zsh
 
 # Docker CLI
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
-RUN apk add -q --update --progress --no-cache docker-compose
+RUN sudo apk add -q --update --progress --no-cache docker-compose
 
 COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
