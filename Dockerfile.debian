@@ -89,8 +89,8 @@ COPY .p10k.zsh /home/vscode/.p10k.zsh
 COPY --chown=root:root --from=docker /usr/local/bin/docker /usr/bin/docker
 RUN sudo chmod +x /usr/bin/docker
 
-RUN mkdir -p /usr/local/lib/docker/cli-plugins \
-    && curl -SL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+RUN sudo mkdir -p /usr/local/lib/docker/cli-plugins
+RUN sudo curl -SL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
 
 COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
