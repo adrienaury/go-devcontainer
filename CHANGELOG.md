@@ -14,7 +14,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Changed` bump goreleaser version from 1.20.0 to 1.24.0
 - `Changed` bump svu version from 1.11.0 to 1.12.0
 - `Changed` bump gitstatusd version from 1.3.1 to 1.5.4
-- `Changed` bump gopls version from 0.13.2 to 0.18.0
+- `Changed` bump gopls version from 0.13.2 to 0.14.2
 - `Changed` bump delve version from 1.21.0 to 1.22.1
 - `Changed` bump changie version from 1.12.0 to 1.18.0
 - `Changed` bump github-cli version from 2.32.1 to 2.44.1

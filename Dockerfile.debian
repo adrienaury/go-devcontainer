@@ -110,7 +110,7 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.18.0 \
+RUN    up gopls         0.14.2 \
     && up delve         1.22.1 \
     && up gopkgs        2.1.2 \
     && up go-outline \
