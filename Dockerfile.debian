@@ -1,6 +1,6 @@
 ARG DEBIAN_VERSION=bookworm
 ARG DOCKER_VERSION=25.0.3
-ARG DOCKER_COMPOSE_VERSION=v2.22.0
+ARG DOCKER_COMPOSE_VERSION=v2.24.6
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -37,11 +37,11 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.54.1 \
+RUN    up golangci-lint 1.56.2 \
     && up venom         1.1.0 \
     && up neon          1.6.0 \
-    && up goreleaser    1.20.0 \
-    && up svu           1.11.0 \
+    && up goreleaser    1.24.0 \
+    && up svu           1.12.0 \
     && go clean -cache -testcache
 
 ####################################################################################
@@ -79,7 +79,7 @@ RUN wget -O- -nv https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master
     && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k \
     && rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git* \
     && mkdir -p ~/.cache/gitstatus \
-    && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.3.1/gitstatusd-linux-x86_64.tar.gz | tar -xz -C ~/.cache/gitstatus gitstatusd-linux-x86_64
+    && wget -O- -nv https://github.com/romkatv/gitstatus/releases/download/v1.5.4/gitstatusd-linux-x86_64.tar.gz | tar -xz -C ~/.cache/gitstatus gitstatusd-linux-x86_64
 
 # Zsh Theme configuration
 COPY .zshrc /home/vscode/.zshrc
@@ -110,8 +110,8 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.13.2 \
-    && up delve         1.21.0 \
+RUN    up gopls         0.18.0 \
+    && up delve         1.22.1 \
     && up gopkgs        2.1.2 \
     && up go-outline \
     && up goplay        1.0.0 \
@@ -121,6 +121,6 @@ RUN    up gopls         0.13.2 \
     && go clean -cache -testcache
 
 # Optionnal tools
-RUN    up changie    1.12.0 \
-    && up cli        2.32.1 \
+RUN    up changie    1.18.0 \
+    && up cli        2.44.1 \
     && go clean -cache -testcache

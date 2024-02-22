@@ -10,6 +10,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Changed` bump golang version from 1.21.3 to 1.22.0
 - `Changed` bump base alpine version from 3.18 to 3.19
 - `Changed` bump docker version from 24.0.6 to 25.0.3
+- `Changed` bump golangci-lint version from 1.54.1 to 1.56.2
+- `Changed` bump goreleaser version from 1.20.0 to 1.24.0
+- `Changed` bump svu version from 1.11.0 to 1.12.0
+- `Changed` bump gitstatusd version from 1.3.1 to 1.5.4
+- `Changed` bump gopls version from 0.13.2 to 0.18.0
+- `Changed` bump delve version from 1.21.0 to 1.22.1
+- `Changed` bump changie version from 1.12.0 to 1.18.0
+- `Changed` bump github-cli version from 2.32.1 to 2.44.1
+- `Changed` bump docker-compose version from 2.22.0 to 2.24.6
 
 ## v3.1.1 - 2023-10-15
 
