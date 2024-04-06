@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.0.2 - 2024-04-06
+
+- `Fixed` bump golang version from 1.22.1 to 1.22.2
+
 ## v4.0.1 - 2024-02-22
 
 - `Fixed` bump golang version from 1.22.0 to 1.22.1
