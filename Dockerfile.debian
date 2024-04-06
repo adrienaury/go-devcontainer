@@ -1,6 +1,6 @@
 ARG DEBIAN_VERSION=bookworm
-ARG DOCKER_VERSION=26.0.0
-ARG DOCKER_COMPOSE_VERSION=v2.26.1
+ARG DOCKER_VERSION=25.0.5
+ARG DOCKER_COMPOSE_VERSION=v2.24.6
 
 FROM docker:${DOCKER_VERSION} AS docker
 
@@ -37,10 +37,10 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 1.57.2 \
-    && up venom         1.2.0 \
-    && up neon          1.7.0 \
-    && up goreleaser    1.25.1 \
+RUN    up golangci-lint 1.56.2 \
+    && up venom         1.1.0 \
+    && up neon          1.6.0 \
+    && up goreleaser    1.24.0 \
     && up svu           1.12.0 \
     && go clean -cache -testcache
 
@@ -110,7 +110,7 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-debian AS go-devcontainer-full-debian
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.15.2 \
+RUN    up gopls         0.14.2 \
     && up delve         1.22.1 \
     && up gopkgs        2.1.2 \
     && up go-outline \
@@ -122,5 +122,5 @@ RUN    up gopls         0.15.2 \
 
 # Optionnal tools
 RUN    up changie    1.18.0 \
-    && up cli        2.47.0 \
+    && up cli        2.32.1 \
     && go clean -cache -testcache
