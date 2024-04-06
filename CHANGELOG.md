@@ -7,9 +7,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## v4.1.0 - 2024-04-06
 
-- `Fixed` bump golang version from 1.22.1 to 1.22.2
 - `Changed` bump docker version from 25.0.5 to 26.0.0
 - `Changed` bump docker-compose version from 2.24.6 to 2.26.1
+- `Changed` bump github-cli version from 2.32.1 to 2.47.0
+- `Changed` bump neon version from 1.6.0 to 1.7.0
+- `Changed` bump golangci-lint version from 1.56.2 to 1.57.2
+- `Changed` bump goreleaser version from 1.24.0 to 1.25.1
+- `Changed` bump venom version from to 1.1.0 to 1.2.0
+- `Changed` bump gopls version from 0.14.2 to 0.15.2
+
+## v4.0.2 - 2024-04-06
+
+- `Fixed` bump golang version from 1.22.1 to 1.22.2
 
 ## v4.0.1 - 2024-02-22
 
