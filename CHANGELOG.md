@@ -13,7 +13,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Changed` bump base alpine version from 3.19 to 3.20
 - `Changed` bump golangci-lint version from 1.57.2 to 1.61.0
 - `Changed` bump neon version from 1.7.0 to 1.9.1
-- `Changed` bump goreleaser version from 1.25.1 to 2.29.3
+- `Changed` bump goreleaser version from 1.25.1 to 2.3.1
 - `Changed` bump svu version from 1.12.0 to 2.2.0
 - `Changed` bump gopls version from 0.15.2 to 0.16.2
 - `Changed` bump delve version from 1.22.1 to 1.23.0
