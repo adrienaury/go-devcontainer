@@ -29,7 +29,7 @@ case $1 in
 
   "goreleaser")
     GORELEASER_VERSION="$2"
-    go install github.com/goreleaser/goreleaser@v${GORELEASER_VERSION}
+    go install github.com/goreleaser/goreleaser/v2@v${GORELEASER_VERSION}
     ;;
 
   "svu")
