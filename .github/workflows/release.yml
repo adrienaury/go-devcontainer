@@ -26,20 +26,20 @@ jobs:
           fetch-depth: 0
 
       - name: Build
-        run: docker-compose build
+        run: docker compose build
 
       - name: Start services
-        run: docker-compose up -d ci
+        run: docker compose up -d ci
 
       - uses: FranzDiebold/github-env-vars-action@v2
       - name: Release
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          docker-compose exec -T -u root ci bash -c 'git config --global --add safe.directory /workspace'
-          docker-compose exec -T -u root ci bash -c 'echo "DOCKERHUB_USER: adrienaury" > ~/.dockerhub.yml'
-          docker-compose exec -e DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN} -T -u root ci bash -c 'echo "DOCKERHUB_PASS: ${DOCKERHUB_TOKEN}" >> ~/.dockerhub.yml'
-          docker-compose exec \
+          docker compose exec -T -u root ci bash -c 'git config --global --add safe.directory /workspace'
+          docker compose exec -T -u root ci bash -c 'echo "DOCKERHUB_USER: adrienaury" > ~/.dockerhub.yml'
+          docker compose exec -e DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN} -T -u root ci bash -c 'echo "DOCKERHUB_PASS: ${DOCKERHUB_TOKEN}" >> ~/.dockerhub.yml'
+          docker compose exec \
             -T \
             -u root \
             -w /workspace \
