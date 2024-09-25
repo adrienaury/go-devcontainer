@@ -39,7 +39,7 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
 
 RUN    up golangci-lint 1.61.0 \
     && up venom         1.2.0 \
-    && up neon          1.9.1 \
+    && up neon          1.10.1 \
     && up goreleaser    2.3.1 \
     && up svu           2.2.0 \
     && go clean -cache -testcache
