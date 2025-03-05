@@ -34,7 +34,7 @@ case $1 in
 
   "svu")
     SVU_VERSION="$2"
-    go install github.com/caarlos0/svu/v2@v${SVU_VERSION}
+    go install github.com/caarlos0/svu/v3@v${SVU_VERSION}
     ;;
 
   "venom")
