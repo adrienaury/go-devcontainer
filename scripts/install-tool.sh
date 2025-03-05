@@ -16,7 +16,7 @@ case $1 in
   "neon")
     NEON_VERSION="$2"
     cd ~
-    git clone --depth 1 --branch $NEON_VERSION https://github.com/c4s4/neon.git
+    git clone --depth 1 --branch v$NEON_VERSION https://github.com/c4s4/neon.git
     cd neon/neon
     go install -ldflags "-X github.com/c4s4/neon/neon/build.NeonVersion=$NEON_VERSION"
     rm -rf ~/neon
