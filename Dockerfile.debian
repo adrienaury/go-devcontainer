@@ -54,6 +54,8 @@ RUN    up golangci-lint 1.64.6 \
 
 FROM go-devcontainer-ci-debian AS go-devcontainer-slim-debian
 
+ARG DOCKER_COMPOSE_VERSION
+
 USER root
 
 RUN install_packages \
