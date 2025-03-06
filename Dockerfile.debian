@@ -17,6 +17,9 @@ RUN install_packages \
     bash zsh \
     git
 
+ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
 # Go
 ARG GO_VERSION=1.24.1
 RUN wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
@@ -91,6 +94,7 @@ RUN sudo chmod +x /usr/bin/docker
 
 RUN sudo mkdir -p /usr/local/lib/docker/cli-plugins
 RUN sudo curl -SL https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+RUN sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 COPY welcome.sh /home/vscode/welcome.sh
 COPY scripts/list-docker-tags.sh /usr/local/bin/dtags
