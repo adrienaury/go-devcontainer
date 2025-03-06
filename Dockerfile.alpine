@@ -19,8 +19,8 @@ RUN apk add -q --update --progress --no-cache \
     bash zsh \
     git
 
-ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+# ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
+# RUN update-ca-certificates
 
 # Go
 COPY --from=go /usr/local/go /usr/local/go

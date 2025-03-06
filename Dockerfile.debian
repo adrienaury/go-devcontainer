@@ -17,8 +17,8 @@ RUN install_packages \
     bash zsh \
     git
 
-ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
+# ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
+# RUN update-ca-certificates
 
 # Go
 ARG GO_VERSION=1.24.1
