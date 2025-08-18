@@ -8,6 +8,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## v7.0.0 - 2025-08-18
 
 - `Changed` bump golang version from 1.24.1 to 1.25.0
+- `Changed` bump base alpine version from 3.21 to 3.22
 - `Changed` bump docker version from 28.0.1 to 28.3.3
 - `Changed` bump docker-compose version from 2.29.3 to 2.39.2
 - `Changed` bump golangci-lint version from 1.64.6 to 2.4.0
