@@ -21,7 +21,7 @@ RUN install_packages \
 # RUN update-ca-certificates
 
 # Go
-ARG GO_VERSION=1.25.2
+ARG GO_VERSION=1.25.11
 RUN wget -nv -O- https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz | tar -C /usr/local -xz
 
 COPY scripts/cache-command.sh /usr/local/bin/cache
