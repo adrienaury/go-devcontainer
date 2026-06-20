@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v8.1.0 - 2026-06-20
+
+- `Changed` bump golangci-lint version from 2.5.0 to 2.12.2
+- `Changed` bump goreleaser version from 2.12.5 to 2.16.0
+- `Changed` bump venom version from 1.2.0 to 1.3.0
+- `Changed` bump neon version from 1.15.0 to 1.16.0
+- `Changed` bump svu version from 3.2.4 to 3.4.1
+- `Changed` bump gopls version from 0.20.0 to 0.22.0
+- `Changed` bump delve version from 1.25.2 to 1.26.3
+- `Changed` bump gotests version from 1.6.0 to 1.9.0
+- `Changed` bump changie version from 1.22.1 to 1.24.2
+- `Changed` bump github-cli version from 2.81.0 to 2.95.0
+
 ## v8.0.0 - 2026-06-20
 
 - `Changed` bump golang version from 1.25.11 to 1.26.4
