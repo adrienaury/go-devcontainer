@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v8.0.0 - 2026-06-20
+
+- `Changed` bump golang version from 1.25.11 to 1.26.4
+- `Changed` bump base alpine version from 3.22 to 3.24
+- `Changed` bump base debian provider from bitnami to debian
+- `Changed` bump docker version from 28.5.1 to 29.6.0
+- `Changed` bump docker-compose version from 2.40.0 to 5.1.4
+
 ## v7.1.1 - 2026-06-19
 
 - `Fixed` bump golang version from 1.25.2 to 1.25.11
