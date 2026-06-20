@@ -24,7 +24,7 @@ case $1 in
 
   "golangci-lint")
     GOLANGCI_LINT_VERSION="$2"
-    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
+    curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin v${GOLANGCI_LINT_VERSION}
     ;;
 
   "goreleaser")
