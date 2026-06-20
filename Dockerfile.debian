@@ -11,11 +11,13 @@ FROM docker:${DOCKER_VERSION} AS docker
 
 FROM debian:${DEBIAN_VERSION}-slim AS go-devcontainer-ci-debian
 
-RUN install_packages \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     ca-certificates \
     wget curl \
     bash zsh \
-    git
+    git && \
+    rm -rf /var/lib/apt/lists/*
 
 # ADD .devcontainer/*.crt /usr/local/share/ca-certificates/
 # RUN update-ca-certificates
@@ -58,11 +60,13 @@ ARG DOCKER_COMPOSE_VERSION
 
 USER root
 
-RUN install_packages \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     locales tzdata \
     sudo \
     figlet \
-    jq \
+    jq && \
+    rm -rf /var/lib/apt/lists/* \
     # Generate default locale
     && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && locale-gen \
