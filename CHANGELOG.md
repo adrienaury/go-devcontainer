@@ -16,7 +16,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `Changed` bump gopls version from 0.22.0 to 0.23.0
 - `Changed` bump delve version from 1.26.3 to 1.27.2
 - `Changed` bump changie version from 1.24.2 to 1.26.0
-- `Changed` bump gitstatusd version from 1.5.4 to 1.5.5
 - `Changed` bump github-cli version from 2.95.0 to 2.102.0
 
 ## v8.1.0 - 2026-06-20
