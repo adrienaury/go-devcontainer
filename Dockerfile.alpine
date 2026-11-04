@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION=3.24
-ARG GO_VERSION=1.27.1
-ARG DOCKER_VERSION=29.8.2
+ARG GO_VERSION=1.27.3
+ARG DOCKER_VERSION=29.9.3
 
 FROM docker:${DOCKER_VERSION}-alpine${ALPINE_VERSION} AS docker
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS go
@@ -41,11 +41,11 @@ ENV PATH="${PATH}:/usr/local/go/bin:${GOPATH}/bin" \
     CGO_ENABLED=0 \
     GO111MODULE=on
 
-RUN    up golangci-lint 2.13.2 \
+RUN    up golangci-lint 2.15.0 \
     && up venom         1.3.0 \
-    && up neon          1.17.0 \
-    && up goreleaser    2.18.0 \
-    && up svu           3.4.1 \
+    && up neon          1.18.0 \
+    && up goreleaser    2.19.0 \
+    && up svu           3.4.4 \
     && go clean -cache -testcache
 
 ####################################################################################
@@ -110,7 +110,7 @@ ENTRYPOINT [ "/bin/zsh" ]
 FROM go-devcontainer-slim-alpine AS go-devcontainer-full-alpine
 
 # These tools are usually installed by VSCode golang extension
-RUN    up gopls         0.23.0 \
+RUN    up gopls         0.24.0 \
     && up delve         1.27.2 \
     && up gopkgs        2.1.2 \
     && up go-outline \
@@ -122,5 +122,5 @@ RUN    up gopls         0.23.0 \
 
 # Optionnal tools
 RUN    up changie    1.26.0 \
-    && up cli        2.102.0 \
+    && up cli        2.103.3 \
     && go clean -cache -testcache
